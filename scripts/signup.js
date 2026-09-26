@@ -1,122 +1,205 @@
-const baseUrl = "https://joindb-ccbc2-default-rtdb.europe-west1.firebasedatabase.app/";
+const baseUrl =
+  "https://joindb-ccbc2-default-rtdb.europe-west1.firebasedatabase.app/";
+
 const apiKey = "AIzaSyBBqXuaXjnWIvN5to5PuH5jif1FhT_9KKw";
 
-// Collects references to all form fields and error elements needed for validation
+// Collects references to the sign-up form fields
 function getFormFields() {
   return {
-    username: document.getElementById('username'),
-    email: document.getElementById('email'),
-    password: document.getElementById('password'),
-    confirmPassword: document.getElementById('confirmPassword'),
-    acceptPrivacy: document.getElementById('acceptPrivacy'),
-    passwordError: document.getElementById('passwordError'),
-    confirmPasswordError: document.getElementById('confirmPasswordError'),
-    emailError: document.getElementById('emailError')
+    username: document.getElementById("username"),
+    email: document.getElementById("email"),
+    password: document.getElementById("password"),
+    confirmPassword: document.getElementById("confirmPassword"),
+    acceptPrivacy: document.getElementById("acceptPrivacy"),
   };
 }
 
-// Validates all sign-up fields, updates error messages, and returns whether the form is valid overall
+// Checks whether the sign-up form is valid
 function isFormValid() {
   const form = getFormFields();
-  const allFilled = form.username.value.trim() !== '' && form.email.value.trim() !== '' && form.password.value.trim() !== '' && form.confirmPassword.value.trim() !== '';
-  const passwordLongEnough = form.password.value.length >= 8;
-  const passwordsMatch = form.password.value === form.confirmPassword.value;
+  const usernameValid = form.username.value.trim() !== "";
   const emailValid = isValidEmail(form.email.value);
+  const passwordValid = form.password.value.length >= 8;
+  const passwordsMatch = checkPasswordsMatch(form);
 
-  setFieldError(form.passwordError, form.password.value !== '', passwordLongEnough, 'Password must be at least 8 characters.');
-  setFieldError(form.confirmPasswordError, form.confirmPassword.value !== '', passwordsMatch, 'Passwords do not match.');
-  setFieldError(form.emailError, form.email.value !== '', emailValid, 'Please enter a valid email address.');
-
-  return allFilled && passwordLongEnough && passwordsMatch && emailValid && form.acceptPrivacy.checked;
+  return usernameValid && emailValid && passwordValid &&
+    passwordsMatch && form.acceptPrivacy.checked;
 }
 
-// Checks whether a string matches a basic email pattern (something@something.something)
+// Checks whether both passwords match
+function checkPasswordsMatch(form) {
+  return form.confirmPassword.value !== "" &&
+    form.password.value === form.confirmPassword.value;
+}
+
+// Checks whether the email has a valid format
 function isValidEmail(email) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailPattern.test(email);
 }
 
-// Shows or clears an error message on a field, depending on whether it has content and is valid
-function setFieldError(errorElement, hasValue, isValid, message) {
-  errorElement.textContent = (hasValue && !isValid) ? message : '';
+// Validates the username after leaving the field
+function validateUsername() {
+  const input = document.getElementById("username");
+  const error = document.getElementById("usernameError");
+  const valid = input.value.trim() !== "";
+
+  error.textContent = valid ? "" : "Please enter your name.";
+  return valid;
 }
 
-// Enables or disables the submit button based on current form validity
+// Validates the email after leaving the field
+function validateSignUpEmail() {
+  const input = document.getElementById("email");
+  const error = document.getElementById("emailError");
+  const valid = isValidEmail(input.value);
+
+  error.textContent = valid ? "" : "Please enter a valid email address.";
+  return valid;
+}
+
+// Validates the password after leaving the field
+function validatePassword() {
+  const input = document.getElementById("password");
+  const error = document.getElementById("passwordError");
+  const valid = input.value.length >= 8;
+
+  error.textContent = valid ? "" : "Password must be at least 8 characters.";
+  return valid;
+}
+
+// Validates the repeated password
+function validateConfirmPassword() {
+  const password = document.getElementById("password").value;
+  const confirm = document.getElementById("confirmPassword").value;
+  const error = document.getElementById("confirmPasswordError");
+  const valid = confirm !== "" && confirm === password;
+
+  error.textContent = valid ? "" : "Passwords do not match.";
+  return valid;
+}
+
+// Validates all input fields before submitting
+function validateSignUpFields() {
+  const usernameValid = validateUsername();
+  const emailValid = validateSignUpEmail();
+  const passwordValid = validatePassword();
+  const confirmValid = validateConfirmPassword();
+
+  return usernameValid && emailValid &&
+    passwordValid && confirmValid;
+}
+
+// Enables or disables the sign-up button
 function updateSubmitButtonState() {
-  const submitButton = document.getElementById('signUpButton');
-  submitButton.disabled = !isFormValid();
+  const button = document.getElementById("signUpButton");
+  button.disabled = !isFormValid();
 }
 
-// Picks a random contact color CSS variable name (--contact_color_1 to --contact_color_15)
+// Picks a random contact color
 function getRandomContactColor() {
   const randomColor = Math.floor(Math.random() * 15) + 1;
-  return '--contact_color_' + randomColor;
+  return "--contact_color_" + randomColor;
 }
 
-// Creates a new Firebase Auth account via REST and returns the parsed response
+// Creates a Firebase Auth account
 function signUpUser(email, password) {
-  return fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`, {
-    method: 'POST',
-    body: JSON.stringify({ email: email, password: password, returnSecureToken: true })
-  }).then(response => response.json());
+  const url = getSignUpUrl();
+  const data = { email, password, returnSecureToken: true };
+
+  return fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  }).then((response) => response.json());
 }
 
-// Writes the new user's username, email, and color to the database via REST
+// Returns the Firebase sign-up URL
+function getSignUpUrl() {
+  return `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`;
+}
+
+// Writes the new user to the database
 function saveUserToDatabase(uid, username, email, idToken) {
-  return fetch(baseUrl + 'users/' + uid + '.json?auth=' + idToken, {
-    method: 'PUT',
-    body: JSON.stringify({ username: username, email: email, color: getRandomContactColor() })
+  const url = baseUrl + "users/" + uid + ".json?auth=" + idToken;
+  const user = { username, email, color: getRandomContactColor() };
+
+  return fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(user),
   });
 }
 
-// Handles form submission: validates, creates the account via REST, saves user data, then shows success
+// Handles the sign-up form submission
 function handleSignUpSubmit(event) {
   event.preventDefault();
-  if (!isFormValid()) return;
 
-  const username = document.getElementById('username').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const emailError = document.getElementById('emailError');
+  if (!validateSignUpFields() || !isFormValid()) return;
 
-  signUpUser(email, password)
-    .then((data) => {
-      if (data.error) throw data.error;
-      return saveUserToDatabase(data.localId, username, email, data.idToken);
-    })
+  const form = getFormFields();
+  createUserAccount(form);
+}
+
+// Creates the user account and database entry
+function createUserAccount(form) {
+  signUpUser(form.email.value, form.password.value)
+    .then((data) => saveCreatedUser(data, form))
     .then(() => showSuccessOverlay())
-    .catch((error) => handleSignUpError(error, emailError));
+    .catch(handleSignUpError);
 }
 
-// Displays a specific error message for a duplicate email, logs other errors to the console
-function handleSignUpError(error, emailErrorElement) {
-  if (error.message === 'EMAIL_EXISTS') {
-    emailErrorElement.textContent = 'This email is already in use.';
-  } else {
-    console.error(error);
+// Saves a successfully created user
+function saveCreatedUser(data, form) {
+  if (data.error) throw data.error;
+
+  return saveUserToDatabase(
+    data.localId,
+    form.username.value,
+    form.email.value,
+    data.idToken,
+  );
+}
+
+// Displays sign-up errors
+function handleSignUpError(error) {
+  const emailError = document.getElementById("emailError");
+
+  if (error.message === "EMAIL_EXISTS") {
+    emailError.textContent = "This email is already in use.";
+    return;
   }
+
+  console.error(error);
 }
 
-// Shows the success overlay for a short time before redirecting to the login page
+// Shows the success overlay and redirects
 function showSuccessOverlay() {
-  const overlay = document.getElementById('successOverlay');
+  const overlay = document.getElementById("successOverlay");
   overlay.hidden = false;
 
-  setTimeout(() => {
-    window.location.href = '../index.html';
-  }, 2000);
+  setTimeout(redirectToLogin, 2000);
 }
 
-// Registers all event listeners for the sign-up form and sets the initial button state
-function initSignUp() {
-  document.querySelector('.signUpForm').addEventListener('submit', handleSignUpSubmit);
-  document.getElementById('acceptPrivacy').addEventListener('change', updateSubmitButtonState);
-  document.getElementById('username').addEventListener('input', updateSubmitButtonState);
-  document.getElementById('email').addEventListener('input', updateSubmitButtonState);
-  document.getElementById('password').addEventListener('input', updateSubmitButtonState);
-  document.getElementById('confirmPassword').addEventListener('input', updateSubmitButtonState);
+// Redirects to the login page
+function redirectToLogin() {
+  window.location.href = "../index.html";
+}
 
+// Registers live form events
+function registerSignUpListeners() {
+  const form = getFormFields();
+
+  form.acceptPrivacy.addEventListener("change", updateSubmitButtonState);
+  form.username.addEventListener("input", updateSubmitButtonState);
+  form.email.addEventListener("input", updateSubmitButtonState);
+  form.password.addEventListener("input", updateSubmitButtonState);
+  form.confirmPassword.addEventListener("input", updateSubmitButtonState);
+}
+
+// Initializes the sign-up page
+function initSignUp() {
+  const signUpForm = document.querySelector(".signUpForm");
+
+  signUpForm.addEventListener("submit", handleSignUpSubmit);
+  registerSignUpListeners();
   updateSubmitButtonState();
 }
-
-document.addEventListener('DOMContentLoaded', initSignUp);

@@ -25,9 +25,39 @@ function storeSession(data) {
   localStorage.setItem("idToken", data.idToken);
 }
 
+// Validates the login email field
+function validateLoginEmail() {
+  const email = document.getElementById("email");
+  const error = document.getElementById("emailError");
+
+  if (!email.value.trim()) {
+    error.textContent = "Please enter your email.";
+    return false;
+  }
+
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
+  error.textContent = valid ? "" : "Please enter a valid email address.";
+  return valid;
+}
+
+// Validates the login password field
+function validateLoginPassword() {
+  const password = document.getElementById("password");
+  const error = document.getElementById("passwordError");
+  const valid = password.value.trim() !== "";
+
+  error.textContent = valid ? "" : "Please enter your password.";
+  return valid;
+}
+
 // Handles normal login
 function handleLoginSubmit(event) {
   event.preventDefault();
+
+  const emailValid = validateLoginEmail();
+  const passwordValid = validateLoginPassword();
+
+  if (!emailValid || !passwordValid) return;
 
   localStorage.removeItem("isGuest");
 
@@ -75,4 +105,3 @@ function initSignIn() {
   form.addEventListener("submit", handleLoginSubmit);
   guestButton.addEventListener("click", handleGuestLogin);
 }
-
