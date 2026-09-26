@@ -180,14 +180,15 @@ form {
 .error_message {
   min-height: 18px;
   margin-top: 6px;
-  color: #ff001f;
-  font-size: 14px;
+  color: var(--error_color);
+  font-size: 16px;
 }
 
 .form_status {
   min-height: 18px;
   text-align: center;
-  font-size: 14px;
+  color: var(--error_color);
+  font-size: 16px;
 }
 
 .form_actions {
