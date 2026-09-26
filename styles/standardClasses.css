@@ -36,8 +36,8 @@
 .legal_necessities {
   display: flex;
   flex-direction: column;
-  justify-content: end;
   gap: 4px;
+  margin-top: 32px;
   padding-left: 56px;
 }
 

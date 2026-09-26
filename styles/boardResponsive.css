@@ -102,26 +102,37 @@
 
 @media screen and (min-width: 1024px) and (max-width: 1439px) {
   body {
-    overflow: auto;
+    overflow: hidden;
   }
+
+  .main_content {
+    height: 100vh;
+    overflow-y: auto;
+  }
+
   .main_title {
     gap: 16px;
     padding-left: 64px;
   }
+
   .main_title > div {
     gap: 16px;
   }
+
   .search_wrapper {
     width: auto;
   }
+
   .kanban {
     justify-content: space-between;
     flex-wrap: wrap;
     padding-bottom: 80px;
   }
+
   .column_list {
     height: 475px;
   }
+
   .add_task {
     padding: 32px 32px;
   }
