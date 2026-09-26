@@ -34,7 +34,7 @@
   /* Logo nach der Animation */
 
   .signup_logo {
-    position: fixed;
+    position: absolute;
     top: 16px;
     left: 24px;
     z-index: 1001;
@@ -252,11 +252,37 @@
     font-size: 16px;
   }
 
-  .form_status {
-    display: none;
+  .footer {
+    bottom: 0px;
+  }
+}
+
+/* Kleine Bildschirmhöhen */
+
+@media screen and (max-width: 1023px) and (max-height: 750px) {
+  body {
+    overflow-y: auto;
+  }
+
+  .page_shell {
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .main_content {
+    padding-bottom: 32px;
+  }
+
+  .signup_area {
+    position: static;
+    width: auto;
+    margin: 24px auto 0;
+    transform: none;
   }
 
   .footer {
-    bottom: 0px;
+    position: static;
+    margin-top: 48px;
+    padding-bottom: 20px;
   }
 }

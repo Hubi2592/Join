@@ -1,3 +1,10 @@
+body {
+  display: block;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .signup_page_logo {
   position: absolute;
   top: 64px;
@@ -17,9 +24,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1;
   width: 100%;
-  min-height: 100vh;
-  padding: 0;
+  min-height: 0;
+  padding: 100px 0 24px;
 }
 
 .SignUp_Container {
@@ -169,14 +177,11 @@
 }
 
 .page_shell > .footer {
-  position: fixed;
-  right: 0;
-  bottom: 24px;
-  left: 0;
-  z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
   gap: 32px;
   width: 100%;
+  padding: 24px 0;
 }
