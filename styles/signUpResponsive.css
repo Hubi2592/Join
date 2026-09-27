@@ -37,7 +37,7 @@
   }
 
   .SignUp_Container {
-    width: calc(100% - 64px);
+    /* width: calc(100% - 64px); */
     max-width: 480px;
     margin: 0 auto;
     padding: 28px 24px 32px;
@@ -96,7 +96,7 @@
 
   .error_message {
     min-height: 12px;
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .checkbox_Group {
@@ -151,7 +151,7 @@
   }
 
   .SignUp_Container h1 {
-    font-size: 40px;
+    font-size: 32px;
   }
 
   .back_button {
@@ -166,7 +166,7 @@
 
   .checkbox_Group label,
   .checkbox_Group a {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .page_shell > .footer a {
