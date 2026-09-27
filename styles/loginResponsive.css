@@ -245,7 +245,8 @@
   }
 
   .signup_area {
-    bottom: 80px;
+    left: 40px;
+    top: 575px;
     gap: 16px;
   }
 
@@ -275,7 +276,7 @@
   }
 
   .signup_area {
-    position: static;
+    position: absolute;
     width: auto;
     margin: 24px auto 0;
     transform: none;
