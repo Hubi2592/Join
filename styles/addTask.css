@@ -38,11 +38,23 @@
 .add_task_right {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
   margin: 0;
   padding: 0;
 }
+.add_task_right > .add_task_input {
+  width: 100%;
+  min-width: 0;
+}
+
+.add_task_right .priority,
+.add_task_right .select_areas,
+.add_task_right .subtask_wrapper {
+  width: 100%;
+  min-width: 0;
+}
+
 .add_task_left {
   gap: 32px;
 }
@@ -100,28 +112,36 @@
 /* Priority */
 .priority {
   display: flex;
-  gap: 16px;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
 }
+
 .priority > button {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  flex: 1;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
   height: 56px;
-  padding: 16px 10px;
+  padding: 16px 6px;
   border: none;
   border-radius: 10px;
   background-color: white;
   box-shadow: 0 0 4px var(--button_shadow_hover);
-  font-size: 20px;
+  font-size: 16px;
+  white-space: nowrap;
 }
+
 .priority > button:hover {
   box-shadow: 0 4px 4px var(--button_shadow_hover);
 }
+
 .priority > button img {
-  width: 20px;
-  height: 20px;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
 }
 /* Dropdown */
 .select_areas {
