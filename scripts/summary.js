@@ -58,7 +58,7 @@ function formatDueDate(date) {
 }
 
 function countTicketsInBoard(tickets) {
-  return tickets.filter((ticket) => ticket.status !== "done").length;
+  return tickets.length;
 }
 
 function renderSummaryTiles(tickets) {
