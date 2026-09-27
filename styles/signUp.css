@@ -5,19 +5,21 @@ body {
   overflow-y: auto;
 }
 
+.page_shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
 .signup_page_logo {
   position: absolute;
   top: 64px;
-  left: 80px;
+  left: max(calc(50% - 720px + 80px), 80px);
   width: 100px;
   height: auto;
   z-index: 10;
-}
-
-.page_shell {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
 }
 
 .signup_content {
@@ -155,17 +157,6 @@ body {
   display: none;
 }
 
-@keyframes fly_in {
-  from {
-    transform: translateX(400px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
 .overlay_box {
   padding: 25px;
   border: none;
@@ -184,4 +175,16 @@ body {
   gap: 32px;
   width: 100%;
   padding: 24px 0;
+}
+
+@keyframes fly_in {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
