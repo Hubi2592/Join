@@ -125,7 +125,8 @@
   flex-direction: column;
   gap: 16px;
   padding: 0px;
-  height: 551px;
+  padding-bottom: 25px;
+  height: 65dvh;
   list-style: none;
   overflow: auto;
   overflow-x: hidden;
