@@ -152,14 +152,14 @@ async function search(input) {
   ticketAkku = [];
   for (let index = 0; index < myArray.length; index++) {
     for (let subindex = 0; subindex < (await myArray[index].title.length); subindex++) {
-      let compare = (await myArray[index].title).slice(subindex, input.length + subindex);
-      if (input == compare && !ticketAkku.some((ticket) => ticket.title === myArray[index].title)) {
+      let compare = (await myArray[index].title).slice(subindex, input.length + subindex).toLowerCase();
+      if (input.toLowerCase() == compare && !ticketAkku.some((ticket) => ticket.title === myArray[index].title)) {
         ticketAkku.push(myArray[index]);
       }
     }
     for (let subindex = 0; subindex < (await myArray[index].description.length); subindex++) {
-      let compare = (await myArray[index].description).slice(subindex, input.length + subindex);
-      if (input == compare && !ticketAkku.some((ticket) => ticket.description === myArray[index].description)) {
+      let compare = (await myArray[index].description).slice(subindex, input.length + subindex).toLowerCase();
+      if (input.toLowerCase() == compare && !ticketAkku.some((ticket) => ticket.description === myArray[index].description)) {
         ticketAkku.push(myArray[index]);
       }
     }
