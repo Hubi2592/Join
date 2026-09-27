@@ -34,11 +34,13 @@ function checkPasswordsMatch(form) {
 
 // Checks whether the email has a valid format
 function isValidEmail(email) {
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailPattern.test(email);
+  const emailPattern =
+    /^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/;
+
+  return emailPattern.test(email.trim());
 }
 
-// Validates the username after leaving the field
+// Validates the username
 function validateUsername() {
   const input = document.getElementById("username");
   const error = document.getElementById("usernameError");
@@ -48,7 +50,7 @@ function validateUsername() {
   return valid;
 }
 
-// Validates the email after leaving the field
+// Validates the email
 function validateSignUpEmail() {
   const input = document.getElementById("email");
   const error = document.getElementById("emailError");
@@ -58,7 +60,7 @@ function validateSignUpEmail() {
   return valid;
 }
 
-// Validates the password after leaving the field
+// Validates the password
 function validatePassword() {
   const input = document.getElementById("password");
   const error = document.getElementById("passwordError");
@@ -79,21 +81,36 @@ function validateConfirmPassword() {
   return valid;
 }
 
-// Validates all input fields before submitting
+// Validates the privacy checkbox
+function validatePrivacy() {
+  const checkbox = document.getElementById("acceptPrivacy");
+  const error = document.getElementById("privacyError");
+
+  if (!error) return checkbox.checked;
+
+  error.textContent = checkbox.checked
+    ? ""
+    : "Please accept the Privacy Policy.";
+
+  return checkbox.checked;
+}
+
+// Validates all fields before submitting
 function validateSignUpFields() {
   const usernameValid = validateUsername();
   const emailValid = validateSignUpEmail();
   const passwordValid = validatePassword();
   const confirmValid = validateConfirmPassword();
+  const privacyValid = validatePrivacy();
 
-  return usernameValid && emailValid &&
-    passwordValid && confirmValid;
+  return usernameValid && emailValid && passwordValid &&
+    confirmValid && privacyValid;
 }
 
 // Enables or disables the sign-up button
 function updateSubmitButtonState() {
   const button = document.getElementById("signUpButton");
-  button.disabled = !isFormValid();
+  button.disabled = false;
 }
 
 // Picks a random contact color
@@ -133,7 +150,8 @@ function saveUserToDatabase(uid, username, email, idToken) {
 function handleSignUpSubmit(event) {
   event.preventDefault();
 
-  if (!validateSignUpFields() || !isFormValid()) return;
+  const valid = validateSignUpFields();
+  if (!valid) return;
 
   const form = getFormFields();
   createUserAccount(form);
@@ -141,7 +159,7 @@ function handleSignUpSubmit(event) {
 
 // Creates the user account and database entry
 function createUserAccount(form) {
-  signUpUser(form.email.value, form.password.value)
+  signUpUser(form.email.value.trim(), form.password.value)
     .then((data) => saveCreatedUser(data, form))
     .then(() => showSuccessOverlay())
     .catch(handleSignUpError);
@@ -153,8 +171,8 @@ function saveCreatedUser(data, form) {
 
   return saveUserToDatabase(
     data.localId,
-    form.username.value,
-    form.email.value,
+    form.username.value.trim(),
+    form.email.value.trim(),
     data.idToken,
   );
 }
@@ -188,7 +206,7 @@ function redirectToLogin() {
 function registerSignUpListeners() {
   const form = getFormFields();
 
-  form.acceptPrivacy.addEventListener("change", updateSubmitButtonState);
+  form.acceptPrivacy.addEventListener("change", validatePrivacy);
   form.username.addEventListener("input", updateSubmitButtonState);
   form.email.addEventListener("input", updateSubmitButtonState);
   form.password.addEventListener("input", updateSubmitButtonState);
