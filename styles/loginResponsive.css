@@ -107,10 +107,7 @@
 
   .signup_area {
     position: fixed;
-    right: auto;
-    top: auto;
-    left: 50%;
-    bottom: 140px;
+    top: 575px;
     z-index: 10;
     display: flex;
     justify-content: center;
@@ -118,6 +115,13 @@
     gap: 24px;
     width: max-content;
     transform: translateX(-50%);
+  }
+
+  .signup_area {
+    position: inherit;
+    width: auto;
+    margin: 24px auto 0;
+    transform: none;
   }
 
   /* Footer */
@@ -218,7 +222,7 @@
 
 /* Kleine Smartphones */
 
-@media screen and (max-width: 480px) {
+@media screen and (min-width: 320px) and (max-width: 480px) {
   .site_header {
     height: 96px;
     padding: 16px;
@@ -245,8 +249,7 @@
   }
 
   .signup_area {
-    left: 40px;
-    top: 575px;
+    top: 550px;
     gap: 16px;
   }
 
@@ -261,7 +264,7 @@
 
 /* Kleine Bildschirmhöhen */
 
-@media screen and (max-width: 1023px) and (max-height: 750px) {
+@media screen and (max-width: 1023px) and (max-width: 750px) {
   body {
     overflow-y: auto;
   }
@@ -273,13 +276,6 @@
 
   .main_content {
     padding-bottom: 32px;
-  }
-
-  .signup_area {
-    position: absolute;
-    width: auto;
-    margin: 24px auto 0;
-    transform: none;
   }
 
   .footer {
