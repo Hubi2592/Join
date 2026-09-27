@@ -16,7 +16,7 @@
     display: block;
   }
   .header_right {
-    padding-right: 16px;
+    padding-right: 0px;
   }
   .header_right > a {
     display: none;
