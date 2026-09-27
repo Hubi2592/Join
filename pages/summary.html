@@ -3,10 +3,7 @@
   <head>
     <meta charset="UTF-8" />
 
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Summary</title>
 
@@ -29,14 +26,13 @@
 
   <body onload="initSummary()">
     <aside class="desktop">
-      <a class="logo" href="summary.html"><img src="../assets/img/general/joinLogo.svg" alt="Logo of Join" /></a>
+      <a class="logo" href="summary.html"
+        ><img src="../assets/img/general/joinLogo.svg" alt="Logo of Join"
+      /></a>
 
       <article>
         <section class="menu">
-          <a
-            class="current_page"
-            href="../pages/summary.html"
-          >
+          <a class="current_page" href="../pages/summary.html">
             <img
               src="../assets/img/aside/summaryValidate.svg"
               alt="Summary Icon"
@@ -44,52 +40,28 @@
             <p>Summary</p>
           </a>
 
-          <a
-            class="another_page"
-            href="../pages/addTask.html"
-          >
-            <img
-              src="../assets/img/aside/addTask.svg"
-              alt="Task Icon"
-            />
+          <a class="another_page" href="../pages/addTask.html">
+            <img src="../assets/img/aside/addTask.svg" alt="Task Icon" />
             <p>Add Task</p>
           </a>
 
-          <a
-            class="another_page"
-            href="../pages/board.html"
-          >
-            <img
-              src="../assets/img/aside/board.svg"
-              alt="Board Icon"
-            />
+          <a class="another_page" href="../pages/board.html">
+            <img src="../assets/img/aside/board.svg" alt="Board Icon" />
             <p>Board</p>
           </a>
 
-          <a
-            class="another_page"
-            href="../pages/contacts.html"
-          >
-            <img
-              src="../assets/img/aside/contacts.svg"
-              alt="Contacts Icon"
-            />
+          <a class="another_page" href="../pages/contacts.html">
+            <img src="../assets/img/aside/contacts.svg" alt="Contacts Icon" />
             <p>Contacts</p>
           </a>
         </section>
 
         <section class="legal_necessities">
-          <a
-            class="policies"
-            href="../pages/privacyPolicy.html"
-          >
+          <a class="policies" href="../pages/privacyPolicy.html">
             <p>Privacy Policy</p>
           </a>
 
-          <a
-            class="policies"
-            href="../pages/legalNotice.html"
-          >
+          <a class="policies" href="../pages/legalNotice.html">
             <p>Legal Notice</p>
           </a>
         </section>
@@ -108,10 +80,7 @@
 
         <section class="header_right">
           <a href="../pages/help.html">
-            <img
-              src="../assets/img/general/help.svg"
-              alt="Help Button"
-            />
+            <img src="../assets/img/general/help.svg" alt="Help Button" />
           </a>
 
           <section>
@@ -124,36 +93,15 @@
               <p id="userInitial"></p>
             </button>
 
-            <dialog
-              class="navigation"
-              id="nav"
-              onclick="closeDialog('nav')"
-            >
-              <div
-                class="subnavigation"
-                onclick="stopPropagation(event)"
-              >
-                <a
-                  class="mobile"
-                  href="../pages/help.html"
-                >
-                  Help
-                </a>
+            <dialog class="navigation" id="nav" onclick="closeDialog('nav')">
+              <div class="subnavigation" onclick="stopPropagation(event)">
+                <a class="mobile" href="../pages/help.html"> Help </a>
 
-                <a href="../pages/legalNotice.html">
-                  Legal Notice
-                </a>
+                <a href="../pages/legalNotice.html"> Legal Notice </a>
 
-                <a href="../pages/privacyPolicy.html">
-                  Privacy Policy
-                </a>
+                <a href="../pages/privacyPolicy.html"> Privacy Policy </a>
 
-                <a
-                  href="../index.html"
-                  onclick="handleLogout(event)"
-                >
-                  Log out
-                </a>
+                <a id="logoutButton" href="../index.html"> Log out </a>
               </div>
             </dialog>
           </section>
@@ -161,20 +109,14 @@
       </header>
 
       <main>
-        <section
-          class="mobile_greeting"
-          id="mobileGreeting"
-        >
+        <section class="mobile_greeting" id="mobileGreeting">
           <div class="mobile_greeting_content">
             <p id="mobileGreetingText"></p>
             <p id="mobileGreetingName"></p>
           </div>
         </section>
 
-        <section
-          class="summary_page"
-          id="summaryPage"
-        >
+        <section class="summary_page" id="summaryPage">
           <div class="summary_header">
             <h1>Join 360</h1>
 
@@ -192,23 +134,13 @@
                   tabindex="0"
                 >
                   <div class="summary_icon summary_icon_dark">
-                    <img
-                      src="../assets/img/general/pen.svg"
-                      alt=""
-                    />
+                    <img src="../assets/img/general/pen.svg" alt="" />
                   </div>
 
                   <div class="summary_tile_text">
-                    <p
-                      class="summary_number"
-                      id="todoCount"
-                    >
-                      0
-                    </p>
+                    <p class="summary_number" id="todoCount">0</p>
 
-                    <p class="summary_label">
-                      To-do
-                    </p>
+                    <p class="summary_label">To-do</p>
                   </div>
                 </div>
 
@@ -218,23 +150,13 @@
                   tabindex="0"
                 >
                   <div class="summary_icon summary_icon_dark">
-                    <img
-                      src="../assets/img/general/check.svg"
-                      alt=""
-                    />
+                    <img src="../assets/img/general/check.svg" alt="" />
                   </div>
 
                   <div class="summary_tile_text">
-                    <p
-                      class="summary_number"
-                      id="doneCount"
-                    >
-                      0
-                    </p>
+                    <p class="summary_number" id="doneCount">0</p>
 
-                    <p class="summary_label">
-                      Done
-                    </p>
+                    <p class="summary_label">Done</p>
                   </div>
                 </div>
               </div>
@@ -246,39 +168,24 @@
               >
                 <div class="summary_urgent">
                   <div class="summary_icon summary_icon_urgent">
-                    <img
-                      src="../assets/img/task/urgentValidate.svg"
-                      alt=""
-                    />
+                    <img src="../assets/img/task/urgentValidate.svg" alt="" />
                   </div>
 
                   <div class="summary_tile_text">
-                    <p
-                      class="summary_number"
-                      id="urgentCount"
-                    >
-                      0
-                    </p>
+                    <p class="summary_number" id="urgentCount">0</p>
 
-                    <p class="summary_label">
-                      Urgent
-                    </p>
+                    <p class="summary_label">Urgent</p>
                   </div>
                 </div>
 
                 <div class="summary_divider"></div>
 
                 <div class="summary_deadline">
-                  <p
-                    class="summary_date"
-                    id="upcomingDeadline"
-                  >
+                  <p class="summary_date" id="upcomingDeadline">
                     No upcoming due dates
                   </p>
 
-                  <p class="summary_label">
-                    Upcoming Deadline
-                  </p>
+                  <p class="summary_label">Upcoming Deadline</p>
                 </div>
               </div>
 
@@ -288,16 +195,9 @@
                   role="button"
                   tabindex="0"
                 >
-                  <p
-                    class="summary_number"
-                    id="tasksInBoardCount"
-                  >
-                    0
-                  </p>
+                  <p class="summary_number" id="tasksInBoardCount">0</p>
 
-                  <p class="summary_label">
-                    Tasks in Board
-                  </p>
+                  <p class="summary_label">Tasks in Board</p>
                 </div>
 
                 <div
@@ -305,16 +205,9 @@
                   role="button"
                   tabindex="0"
                 >
-                  <p
-                    class="summary_number"
-                    id="tasksInProgressCount"
-                  >
-                    0
-                  </p>
+                  <p class="summary_number" id="tasksInProgressCount">0</p>
 
-                  <p class="summary_label">
-                    Tasks In Progress
-                  </p>
+                  <p class="summary_label">Tasks In Progress</p>
                 </div>
 
                 <div
@@ -322,16 +215,9 @@
                   role="button"
                   tabindex="0"
                 >
-                  <p
-                    class="summary_number"
-                    id="awaitingFeedbackCount"
-                  >
-                    0
-                  </p>
+                  <p class="summary_number" id="awaitingFeedbackCount">0</p>
 
-                  <p class="summary_label">
-                    Awaiting Feedback
-                  </p>
+                  <p class="summary_label">Awaiting Feedback</p>
                 </div>
               </div>
             </section>
@@ -347,10 +233,7 @@
 
     <footer class="mobile">
       <section>
-        <a
-          class="current_page"
-          href="../pages/summary.html"
-        >
+        <a class="current_page" href="../pages/summary.html">
           <img
             src="../assets/img/aside/summaryValidate.svg"
             alt="Summary Icon"
@@ -360,40 +243,22 @@
       </section>
 
       <section>
-        <a
-          class="another_page"
-          href="../pages/addTask.html"
-        >
-          <img
-            src="../assets/img/aside/addTask.svg"
-            alt="Add Task Icon"
-          />
+        <a class="another_page" href="../pages/addTask.html">
+          <img src="../assets/img/aside/addTask.svg" alt="Add Task Icon" />
           <p>Add Task</p>
         </a>
       </section>
 
       <section>
-        <a
-          class="another_page"
-          href="../pages/board.html"
-        >
-          <img
-            src="../assets/img/aside/board.svg"
-            alt="Board Icon"
-          />
+        <a class="another_page" href="../pages/board.html">
+          <img src="../assets/img/aside/board.svg" alt="Board Icon" />
           <p>Board</p>
         </a>
       </section>
 
       <section>
-        <a
-          class="another_page"
-          href="../pages/contacts.html"
-        >
-          <img
-            src="../assets/img/aside/contacts.svg"
-            alt="Contacts Icon"
-          />
+        <a class="another_page" href="../pages/contacts.html">
+          <img src="../assets/img/aside/contacts.svg" alt="Contacts Icon" />
           <p>Contacts</p>
         </a>
       </section>

@@ -1,6 +1,5 @@
 function initAddTaskPage() {
   initProfileMenu();
-  setupLogoutButton();
   initAddTask();
 }
 
@@ -14,8 +13,8 @@ function initInformationPage() {
 
   loadOwnProfile(uid);
   initProfileMenu();
-  setupLogoutButton();
   setupBackButton();
+  setupLogoutButton();
 }
 
 function initProfileMenu() {
@@ -52,23 +51,6 @@ function initSubnavigation() {
 
 function stopProfilePropagation(event) {
   event.stopPropagation();
-}
-
-function setupLogoutButton() {
-  const button = document.getElementById("logoutButton");
-  if (!button) return;
-
-  button.addEventListener("click", handleLogout);
-}
-
-function handleLogout(event) {
-  event.preventDefault();
-
-  localStorage.removeItem("uid");
-  localStorage.removeItem("idToken");
-  localStorage.removeItem("isGuest");
-
-  window.location.replace("../index.html");
 }
 
 function setupBackButton() {

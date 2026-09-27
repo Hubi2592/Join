@@ -104,4 +104,22 @@ function initSignIn() {
 
   form.addEventListener("submit", handleLoginSubmit);
   guestButton.addEventListener("click", handleGuestLogin);
+
+  showLogoutNotification();
 }
+
+// Shows the logout success notification once
+function showLogoutNotification() {
+  const notification = document.getElementById("logoutNotification");
+  const loggedOut = sessionStorage.getItem("logoutSuccess");
+
+  if (!notification || loggedOut !== "true") return;
+
+  notification.classList.add("show");
+  sessionStorage.removeItem("logoutSuccess");
+
+  setTimeout(() => {
+    notification.classList.remove("show");
+  }, 3000);
+}
+

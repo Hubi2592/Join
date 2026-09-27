@@ -307,3 +307,26 @@ form {
     background-color: #f6f7f8;
   }
 }
+
+.logout_notification {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  z-index: 2000;
+  padding: 16px 24px;
+  border-radius: 12px;
+  color: white;
+  background-color: var(--main_color);
+  box-shadow: 0 4px 12px var(--button_shadow);
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.logout_notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}

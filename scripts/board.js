@@ -6,12 +6,14 @@ let draggedTicket;
 
 function initialise() {
   const uid = localStorage.getItem("uid");
+
   if (!uid) {
     window.location.href = "../index.html";
     return;
   }
 
   loadOwnProfile(uid);
+  setupLogoutButton();
   cardColumn();
 }
 

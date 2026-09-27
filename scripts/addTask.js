@@ -14,6 +14,7 @@ function initAddTask() {
   initActionButtons("toDo");
   setPriority("Medium");
   setMinimumDueDate();
+  setupLogoutButton();
 }
 
 function redirectToLogin() {

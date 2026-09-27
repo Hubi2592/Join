@@ -228,19 +228,6 @@ function handleTileKeydown(event) {
   openBoard();
 }
 
-function handleLogout(event) {
-  event.preventDefault();
-
-  clearSession();
-  window.location.href = "../index.html";
-}
-
-function clearSession() {
-  localStorage.removeItem("uid");
-  localStorage.removeItem("idToken");
-  localStorage.removeItem("isGuest");
-}
-
 function startMobileGreeting() {
   if (window.innerWidth >= 1024) return;
 
@@ -268,6 +255,7 @@ function initSummary() {
     return;
   }
 
+  setupLogoutButton();
   initializeSummary(uid);
 }
 

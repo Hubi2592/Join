@@ -67,3 +67,21 @@ async function contactInitials(contact) {
     <div class="contact_color" style="background-color: var(${await contact.color});">${getInitials(contact.name)}</div>
   `;
 }
+
+function setupLogoutButton() {
+  const button = document.getElementById("logoutButton");
+  if (!button) return;
+
+  button.addEventListener("click", handleLogout);
+}
+
+function handleLogout(event) {
+  event.preventDefault();
+
+  localStorage.removeItem("uid");
+  localStorage.removeItem("idToken");
+  localStorage.removeItem("isGuest");
+  sessionStorage.setItem("logoutSuccess", "true");
+
+  window.location.replace("../index.html");
+}
