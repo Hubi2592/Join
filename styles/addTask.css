@@ -195,12 +195,27 @@
   font-size: 20px;
 }
 .select_contacts_option {
+  position: relative;
   width: 100%;
   padding: 8px 16px;
   border: none;
   background-color: white;
   text-align: left;
   font-size: 20px;
+}
+.select_contacts_option .subtask_checkbox {
+  inset: 50% 16px auto auto;
+  width: 20px;
+  height: 20px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.select_contacts_option .subtask_checkbox_custom_assigned {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 .select_contacts_option:hover {
   color: black;

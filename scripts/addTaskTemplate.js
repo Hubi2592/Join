@@ -49,11 +49,13 @@ function recreateSubtaskTemplate(subtask, index) {
 
 async function contactsTemplate(contact, name) {
   return `
-    <button class="select_contacts_option assign" type="button" data-value="Contact" onclick="assignedUsers('${contact[name]}', '${contact.color}'); this.classList.toggle('assigned_button')">
+    <button class="select_contacts_option assign" type="button" data-value="Contact" onclick="assignedUsers('${contact[name]}', '${contact.color}'); this.classList.toggle('assigned_button'); this.querySelector('.subtask_checkbox').checked = this.classList.contains('assigned_button')">
       <div class="assign">
         <div class="contact_color" style="background-color: var(${contact.color});">${await getInitials(contact[name])}</div>
         ${contact[name]}
       </div>
+      <input type="checkbox" class="subtask_checkbox" />
+      <span class="subtask_checkbox_custom_assigned"></span>
     </button>
 `;
 }
