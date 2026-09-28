@@ -11,6 +11,7 @@ async function addContactsToSelection() {
 async function renderContacts(contactRef, contacts) {
   for (const contact of contacts) {
     contactRef.innerHTML += await contactsTemplate(contact, "name");
+    if (assigned.some((user) => user.name === contact["name"])) validateAssign(contact["name"]);
   }
 }
 
@@ -24,7 +25,10 @@ async function assignedUsers(name, color) {
 
 async function addAssignedUsers(name, color) {
   assigned.push({ name: name, color: color });
-  if (assigned.length > 3) assigned.pop();
+  if (assigned.length > 3) {
+    assigned.pop();
+    validateAssign(name);
+  } 
   updateAssigned();
 }
 
@@ -57,6 +61,10 @@ async function updateAssigned() {
   for (let index = 0; index < assigned.length; index++) {
     assignedRef.innerHTML += await contactInitials(assigned[index]);
   }
+}
+
+function validateAssign(name) {
+  document.getElementById(name).classList.toggle('assigned_button');
 }
 
 function resetAssigned() {
