@@ -146,8 +146,12 @@
 /* Assigned */
 .assigned_user {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-top: 8px;
+  max-height: 88px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .assigned_button {
   color: white;
