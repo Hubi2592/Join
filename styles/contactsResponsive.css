@@ -8,24 +8,37 @@
   display: none;
 }
 
-@media screen and (max-width: 1244px) and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (max-width: 1399px) {
+  .contacts_container {
+    width: 380px;
+  }
+
+  .contact_details_container {
+    min-width: 0;
+    margin-left: 0;
+    padding: 40px 32px;
+    overflow: hidden;
+  }
+
   .contact_detail_header {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 4px;
+    gap: 6px;
+    width: 100%;
     height: auto;
+    margin-top: 48px;
   }
 
   .contact_detail_header h2 {
     margin: 0;
-    font-size: 40px;
+    font-size: 48px;
     line-height: 1;
   }
 
   .contact_detail_header p {
     margin: 0;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 1.2;
   }
 
@@ -33,6 +46,77 @@
     width: 64px;
     height: 3px;
     margin: 4px 0;
+  }
+
+  .contact_card {
+    width: 100%;
+    min-width: 0;
+    margin-top: 40px;
+  }
+
+  .contact_card_header {
+    gap: 24px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .contact_card_color {
+    width: 96px;
+    height: 96px;
+    font-size: 40px;
+  }
+
+  .contact_card_header h2 {
+    font-size: 40px;
+    overflow-wrap: anywhere;
+  }
+
+  .contact_card_buttons {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .contact_buttons {
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 18px;
+  }
+
+  .contact_buttons img {
+    width: 20px;
+    margin-right: 2px;
+  }
+
+  .contact_card_info {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .contact_card_info .subtitle {
+    margin-bottom: 32px;
+    font-size: 24px;
+  }
+
+  .contact_card_info .detail_label {
+    font-size: 18px;
+  }
+
+  .contact_card_info .detail_value {
+    max-width: 100%;
+    font-size: 18px;
+    overflow-wrap: anywhere;
+  }
+
+  .contact_item {
+    gap: 16px;
+  }
+
+  .contact_name {
+    font-size: 20px;
+  }
+
+  .contact_email {
+    font-size: 12px;
   }
 }
 
@@ -228,7 +312,7 @@
     filter: brightness(0) invert(1);
   }
 
-  /* Contact details */
+   /* Contact details */
 
   .contact_details_container {
     position: relative;
@@ -297,68 +381,4 @@
     height: 24px;
   }
 
-  /* Detail card */
-
-  .contact_card {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    margin-top: 0;
-  }
-
-  .contact_card_header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    margin-bottom: 28px;
-  }
-
-  .contact_card_color {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 64px;
-    height: 64px;
-    flex-shrink: 0;
-    border: 2px solid white;
-    border-radius: 50%;
-    font-size: 20px;
-  }
-
-  .contact_card_header h2 {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 700;
-  }
-
-  .contact_card_buttons {
-    display: none;
-  }
-
-  .contact_card_info {
-    width: 100%;
-  }
-
-  .contact_card_info .subtitle {
-    margin: 0 0 20px;
-    font-size: 16px;
-    font-weight: 400;
-  }
-
-  .contact_card_info .detail_label {
-    margin: 16px 0 8px;
-    font-size: 14px;
-    font-weight: 700;
-  }
-
-  .contact_card_info .detail_value {
-    margin: 0;
-    font-size: 14px;
-  }
-
-  .contact_card_info .contact_email {
-    color: var(--add_hover);
-  }
 }

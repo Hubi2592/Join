@@ -11,18 +11,14 @@ function handleContactClick(event) {
   openMobileContactDetail();
 }
 
-
 function handleOwnUserClick(event) {
   const item = event.target.closest(".contact_item");
 
-  if (!item || !state.ownUser) {
-    return;
-  }
+  if (!item || !state.ownUser) return;
 
   showContactDetail(state.ownUser);
   openMobileContactDetail();
 }
-
 
 function handleDeleteContact(contactId) {
   const contact = findContactById(state.contacts, contactId);
@@ -35,13 +31,11 @@ function handleDeleteContact(contactId) {
   });
 }
 
-
 function finishDeleteContact(uid) {
   clearContactDetail();
   closeMobileContactDetail();
   loadContacts(uid);
 }
-
 
 function handleContactCardClick(event) {
   const actionButton = event.target.closest("[data-action]");
@@ -53,7 +47,6 @@ function handleContactCardClick(event) {
 
   handleDesktopContactAction(event);
 }
-
 
 function handleDesktopContactAction(event) {
   const editButton = event.target.closest("#editContactButton");
@@ -67,7 +60,6 @@ function handleDesktopContactAction(event) {
     handleDeleteContact(deleteButton.dataset.contactId);
   }
 }
-
 
 function handleMobileContactAction(button) {
   const action = button.dataset.action;
@@ -85,21 +77,20 @@ function handleMobileContactAction(button) {
   }
 }
 
-
 function openMobileEdit(button) {
   closeMobileContactMenu();
   handleEditContact(button.dataset.contactId);
 }
-
 
 function deleteMobileContact(button) {
   closeMobileContactMenu();
   handleDeleteContact(button.dataset.contactId);
 }
 
-
 function handleAddContactSubmit(event) {
   event.preventDefault();
+
+  if (!validateAddContact()) return;
 
   const uid = localStorage.getItem("uid");
   const data = getAddContactFormData();
@@ -108,15 +99,13 @@ function handleAddContactSubmit(event) {
     .then(() => finishAddContact(uid));
 }
 
-
 function getAddContactFormData() {
   return {
-    name: document.getElementById("contactName").value,
-    email: document.getElementById("contactEmail").value,
-    phone: document.getElementById("contactPhone").value,
+    name: document.getElementById("contactName").value.trim(),
+    email: document.getElementById("contactEmail").value.trim(),
+    phone: document.getElementById("contactPhone").value.trim(),
   };
 }
-
 
 function finishAddContact(uid) {
   document.getElementById("addContactForm").reset();
@@ -125,7 +114,6 @@ function finishAddContact(uid) {
   loadContacts(uid);
   showSuccessOverlay();
 }
-
 
 function handleEditContact(contactId) {
   const contact = getContactById(contactId);
@@ -136,9 +124,10 @@ function handleEditContact(contactId) {
   openEditContactDialog();
 }
 
-
 function handleEditContactSubmit(event) {
   event.preventDefault();
+
+  if (!validateEditContact()) return;
 
   const uid = localStorage.getItem("uid");
   const data = getEditContactFormData();
@@ -149,7 +138,6 @@ function handleEditContactSubmit(event) {
   saveEditedContact(uid, contact, data);
 }
 
-
 function saveEditedContact(uid, contact, data) {
   if (contact.isOwnUser) {
     saveOwnUserEdit(uid, data.contact);
@@ -159,13 +147,11 @@ function saveEditedContact(uid, contact, data) {
   saveNormalContactEdit(uid, data);
 }
 
-
 function saveNormalContactEdit(uid, data) {
   updateContact(uid, data.id, data.contact).then(() => {
     finishEditContact(uid, data.id);
   });
 }
-
 
 function saveOwnUserEdit(uid, contact) {
   const userData = createOwnUserUpdateData(contact);
@@ -174,7 +160,6 @@ function saveOwnUserEdit(uid, contact) {
     finishOwnUserEdit(uid);
   });
 }
-
 
 function finishOwnUserEdit(uid) {
   removeEditContactDialog();
@@ -185,7 +170,6 @@ function finishOwnUserEdit(uid) {
   });
 }
 
-
 function finishEditContact(uid, contactId) {
   removeEditContactDialog();
 
@@ -194,7 +178,6 @@ function finishEditContact(uid, contactId) {
   });
 }
 
-
 function getEditContactFormData() {
   return {
     id: document.getElementById("editContactId").value,
@@ -202,15 +185,91 @@ function getEditContactFormData() {
   };
 }
 
-
 function getEditContactValues() {
   return {
-    name: document.getElementById("editContactName").value,
-    email: document.getElementById("editContactEmail").value,
-    phone: document.getElementById("editContactPhone").value,
+    name: document.getElementById("editContactName").value.trim(),
+    email: document.getElementById("editContactEmail").value.trim(),
+    phone: document.getElementById("editContactPhone").value.trim(),
   };
 }
 
+function validateAddContact() {
+  const name = validateContactName("contactName");
+  const email = validateContactEmail("contactEmail");
+  const phone = validateContactPhone("contactPhone");
+
+  return name && email && phone;
+}
+
+function validateEditContact() {
+  const name = validateContactName("editContactName");
+  const email = validateContactEmail("editContactEmail");
+  const phone = validateContactPhone("editContactPhone");
+
+  return name && email && phone;
+}
+
+function validateContactName(id) {
+  const input = document.getElementById(id);
+  const value = input.value.trim();
+  const valid = /^[A-Za-zÄÖÜäöüßÀ-ÿ' -]+$/.test(value);
+
+  setContactError(
+    id,
+    valid ? "" : "Please enter a valid name."
+  );
+
+  return valid;
+}
+
+function validateContactEmail(id) {
+  const input = document.getElementById(id);
+  const value = input.value.trim();
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+  setContactError(
+    id,
+    valid ? "" : "Please enter a valid email."
+  );
+
+  return valid;
+}
+
+function validateContactPhone(id) {
+  const input = document.getElementById(id);
+  const value = input.value.trim();
+  const valid = /^[0-9+\-() ]+$/.test(value);
+
+  setContactError(
+    id,
+    valid ? "" : "Please enter a valid phone number."
+  );
+
+  return valid;
+}
+
+function setContactError(id, message) {
+  const input = document.getElementById(id);
+  const error = document.getElementById(id + "Error");
+
+  if (!input || !error) return;
+
+  error.textContent = message;
+  input.classList.toggle("input_error", Boolean(message));
+}
+function restrictNameInput(event) {
+  event.target.value = event.target.value.replace(
+    /[^A-Za-zÄÖÜäöüßÀ-ÿ' -]/g,
+    ""
+  );
+}
+
+function restrictPhoneInput(event) {
+  event.target.value = event.target.value.replace(
+    /[^0-9+\-() ]/g,
+    ""
+  );
+}
 
 function handleEditDelete(event) {
   const contactId = event.currentTarget.dataset.contactId;
@@ -218,7 +277,6 @@ function handleEditDelete(event) {
   handleDeleteContact(contactId);
   closeAnimation(document.getElementById("editContact"));
 }
-
 
 function registerEditDialogListeners() {
   const form = document.getElementById("editContactForm");
@@ -233,13 +291,11 @@ function registerEditDialogListeners() {
   }
 }
 
-
 function registerDialogListeners() {
   registerAddContactForm();
   registerAddContactButtons();
   registerCloseContactButtons();
 }
-
 
 function registerAddContactForm() {
   const form = document.getElementById("addContactForm");
@@ -250,7 +306,6 @@ function registerAddContactForm() {
   );
 }
 
-
 function registerAddContactButtons() {
   const desktop = document.getElementById("addContactButton");
   const mobile = document.getElementById("mobileAddContactButton");
@@ -259,7 +314,6 @@ function registerAddContactButtons() {
   mobile.addEventListener("click", openAddContactDialog);
 }
 
-
 function registerCloseContactButtons() {
   const close = document.getElementById("closeAddContactButton");
   const cancel = document.getElementById("cancelAddContactButton");
@@ -267,7 +321,6 @@ function registerCloseContactButtons() {
   close.addEventListener("click", closeAddContactDialog);
   cancel.addEventListener("click", closeAddContactDialog);
 }
-
 
 function registerContactListeners() {
   const list = document.getElementById("contactsList");

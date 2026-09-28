@@ -8,7 +8,7 @@ function addContactDialogTemplate() {
         ${addContactPlaceholderTemplate()}
 
         <section class="add_contact_content">
-          <form id="addContactForm">
+          <form id="addContactForm" novalidate>
             ${addContactFieldsTemplate()}
             ${addContactButtonsTemplate()}
           </form>
@@ -17,7 +17,6 @@ function addContactDialogTemplate() {
     </dialog>
   `;
 }
-
 
 function addContactCloseTemplate() {
   return `
@@ -33,7 +32,6 @@ function addContactCloseTemplate() {
     </button>
   `;
 }
-
 
 function addContactHeaderTemplate() {
   return `
@@ -51,7 +49,6 @@ function addContactHeaderTemplate() {
   `;
 }
 
-
 function addContactPlaceholderTemplate() {
   return `
     <section class="contact_placeholder">
@@ -63,7 +60,6 @@ function addContactPlaceholderTemplate() {
   `;
 }
 
-
 function addContactFieldsTemplate() {
   return `
     ${contactInputTemplate(
@@ -71,7 +67,9 @@ function addContactFieldsTemplate() {
       "contactName",
       "text",
       "Name",
-      "person.svg"
+      "person.svg",
+      "restrictNameInput(event)",
+      "validateContactName('contactName')"
     )}
 
     ${contactInputTemplate(
@@ -79,7 +77,9 @@ function addContactFieldsTemplate() {
       "contactEmail",
       "email",
       "Email",
-      "mail.svg"
+      "mail.svg",
+      "",
+      "validateContactEmail('contactEmail')"
     )}
 
     ${contactInputTemplate(
@@ -87,13 +87,22 @@ function addContactFieldsTemplate() {
       "contactPhone",
       "tel",
       "Phone",
-      "phone.svg"
+      "phone.svg",
+      "restrictPhoneInput(event)",
+      "validateContactPhone('contactPhone')"
     )}
   `;
 }
 
-
-function contactInputTemplate(id, name, type, label, icon) {
+function contactInputTemplate(
+  id,
+  name,
+  type,
+  label,
+  icon,
+  inputAction,
+  blurAction
+) {
   return `
     <div class="form_group">
       <label for="${id}" class="sr_only">
@@ -105,6 +114,8 @@ function contactInputTemplate(id, name, type, label, icon) {
         name="${name}"
         type="${type}"
         placeholder="${label}"
+        oninput="${inputAction}"
+        onblur="${blurAction}"
         required
       />
 
@@ -121,7 +132,6 @@ function contactInputTemplate(id, name, type, label, icon) {
     </div>
   `;
 }
-
 
 function addContactButtonsTemplate() {
   return `
@@ -144,7 +154,6 @@ function addContactButtonsTemplate() {
   `;
 }
 
-
 function editContactDialogTemplate(contact) {
   return `
     <dialog class="add_contact_dialog" id="editContact">
@@ -155,7 +164,7 @@ function editContactDialogTemplate(contact) {
         ${editContactAvatarTemplate(contact)}
 
         <section class="add_contact_content">
-          <form id="editContactForm">
+          <form id="editContactForm" novalidate>
             ${editContactFormTemplate(contact)}
           </form>
         </section>
@@ -163,7 +172,6 @@ function editContactDialogTemplate(contact) {
     </dialog>
   `;
 }
-
 
 function editContactCloseTemplate() {
   return `
@@ -180,7 +188,6 @@ function editContactCloseTemplate() {
   `;
 }
 
-
 function editContactHeaderTemplate() {
   return `
     <section class="add_contact_header">
@@ -196,7 +203,6 @@ function editContactHeaderTemplate() {
   `;
 }
 
-
 function editContactAvatarTemplate(contact) {
   return `
     <section class="contact_edit_color_spacer">
@@ -209,7 +215,6 @@ function editContactAvatarTemplate(contact) {
     </section>
   `;
 }
-
 
 function editContactFormTemplate(contact) {
   return `
@@ -224,7 +229,6 @@ function editContactFormTemplate(contact) {
   `;
 }
 
-
 function editContactFieldsTemplate(contact) {
   return `
     ${editContactInputTemplate(
@@ -232,7 +236,9 @@ function editContactFieldsTemplate(contact) {
       "text",
       "Name",
       contact.name,
-      "person.svg"
+      "person.svg",
+      "restrictNameInput(event)",
+      "validateContactName('editContactName')"
     )}
 
     ${editContactInputTemplate(
@@ -240,7 +246,9 @@ function editContactFieldsTemplate(contact) {
       "email",
       "Email",
       contact.email,
-      "mail.svg"
+      "mail.svg",
+      "",
+      "validateContactEmail('editContactEmail')"
     )}
 
     ${editContactInputTemplate(
@@ -248,13 +256,22 @@ function editContactFieldsTemplate(contact) {
       "tel",
       "Phone",
       contact.phone,
-      "phone.svg"
+      "phone.svg",
+      "restrictPhoneInput(event)",
+      "validateContactPhone('editContactPhone')"
     )}
   `;
 }
 
-
-function editContactInputTemplate(id, type, label, value, icon) {
+function editContactInputTemplate(
+  id,
+  type,
+  label,
+  value,
+  icon,
+  inputAction,
+  blurAction
+) {
   return `
     <div class="form_group">
       <label for="${id}" class="sr_only">
@@ -266,6 +283,8 @@ function editContactInputTemplate(id, type, label, value, icon) {
         name="${id}"
         type="${type}"
         value="${value || ""}"
+        oninput="${inputAction}"
+        onblur="${blurAction}"
         required
       />
 
@@ -274,10 +293,14 @@ function editContactInputTemplate(id, type, label, value, icon) {
         alt=""
         class="field_icon"
       />
+
+      <p
+        class="error_message"
+        id="${id}Error"
+      ></p>
     </div>
   `;
 }
-
 
 function editContactButtonsTemplate(contact) {
   return `
@@ -293,7 +316,6 @@ function editContactButtonsTemplate(contact) {
     </div>
   `;
 }
-
 
 function editDialogDeleteButtonTemplate(contact) {
   if (contact.isOwnUser) return "";

@@ -1,5 +1,64 @@
 @media screen and (max-width: 1023px) {  
-  
+  /* Detail card */
+
+  .contact_card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .contact_card_header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 28px;
+  }
+  .contact_card_color {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border: 2px solid white;
+    border-radius: 50%;
+    font-size: 20px;
+  }
+  .contact_card_header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .contact_card_buttons {
+    display: none;
+  }
+  .contact_card_info {
+    width: 100%;
+  }
+  .contact_card_info .subtitle {
+    margin: 0 0 20px;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  .contact_card_info .detail_label {
+    margin: 16px 0 8px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .contact_card_info .detail_value {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .contact_card_info .contact_email {
+    color: var(--add_hover);
+  }
+ 
   /* Contact actions */
 
   .contact_mobile_actions {
@@ -40,11 +99,9 @@
     background-color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
-
   .contact_mobile_menu.contact_mobile_menu_open {
     display: flex;
   }
-
   .contact_mobile_menu button {
     display: flex;
     align-items: center;
@@ -57,14 +114,11 @@
     text-align: left;
     cursor: pointer;
   }
-
   .contact_mobile_menu img {
     width: 20px;
     height: 20px;
   }
-
   /* Add and edit dialog */
-
   .add_contact_dialog {
     width: calc(100% - 32px);
     max-width: 480px;
@@ -104,29 +158,24 @@
     background-color: var(--main_color);
     color: white;
   }
-
   .add_contact_header > img {
     display: none;
   }
-
   .add_contact_dialog h2 {
     margin: 0;
     font-size: 40px;
     font-weight: 700;
   }
-
   .add_contact_header p {
     margin: 0;
     font-size: 16px;
   }
-
   .add_contact_header .title_underline {
     width: 64px;
     height: 3px;
     margin-top: 8px;
     background-color: var(--add_hover);
   }
-
   .add_contact_dialog .close {
     position: absolute;
     top: 20px;
@@ -308,7 +357,6 @@
     justify-content: center;
     align-items: center;
   }
-
   footer.mobile .another_page,
   footer.mobile .current_page {
     display: flex;
@@ -321,13 +369,11 @@
     padding: 0;
     border-radius: 16px;
   }
-
   footer.mobile .another_page p,
   footer.mobile .current_page p {
     font-size: 14px;
   }
   }
-
   .own_user {
   flex-shrink: 0;
   width: 100%;
@@ -335,13 +381,11 @@
   padding: 0 0 12px;
   border-bottom: 1px solid var(--menu_color);
 }
-
 .own_user:empty {
   display: none;
   padding: 0;
   border: none;
 }
-
 .own_user .contact_item {
   width: 100%;
   margin: 0;
