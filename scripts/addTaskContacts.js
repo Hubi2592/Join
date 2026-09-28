@@ -1,12 +1,22 @@
 async function addContactsToSelection() {
   const uid = localStorage.getItem("uid");
   const contactRef = document.getElementById("contactList");
-  const contacts = await getAddTaskData("/users/" + uid + "/contacts");
+  const contacts = await getAddTaskData("/contacts");
   const user = await getAddTaskData("/users/" + uid);
   const contactArray = Object.values(contacts || {});
 
-  contactRef.innerHTML = await contactsTemplate(user, "username");
+  contactRef.innerHTML = "";
+
+  addOwnUserToSelection(contactRef, user);
   renderContacts(contactRef, contactArray);
+}
+
+async function addOwnUserToSelection(contactRef, user) {
+  const isGuest = localStorage.getItem("isGuest") === "true";
+
+  if (isGuest || !user?.username) return;
+
+  contactRef.innerHTML += await contactsTemplate(user, "username");
 }
 
 async function renderContacts(contactRef, contacts) {
@@ -18,7 +28,10 @@ async function renderContacts(contactRef, contacts) {
 
 function restoreAssignedState(name) {
   const isAssigned = assigned.some((user) => user.name === name);
-  if (isAssigned) validateAssign(name);
+
+  if (isAssigned) {
+    validateAssign(name);
+  }
 }
 
 function assignedUsers(name, color) {
@@ -33,17 +46,25 @@ function assignedUsers(name, color) {
 }
 
 function addAssignedUsers(name, color) {
-  assigned.push({ name: name, color: color });
+  assigned.push({
+    name: name,
+    color: color,
+  });
+
   updateAssigned();
 }
 
 function removeAssignedUsers(name) {
-  assigned = assigned.filter((user) => user.name !== name);
+  assigned = assigned.filter((user) => {
+    return user.name !== name;
+  });
+
   updateAssigned();
 }
 
 async function updateAssigned() {
   const assignedRef = document.getElementById("assignedUser");
+
   assignedRef.innerHTML = "";
 
   for (const user of assigned) {
@@ -53,6 +74,7 @@ async function updateAssigned() {
 
 function validateAssign(name) {
   const contact = document.getElementById(name);
+
   if (!contact) return;
 
   contact.classList.toggle("assigned_button");

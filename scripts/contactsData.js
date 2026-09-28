@@ -3,38 +3,48 @@ const state = {
   ownUser: null,
 };
 
-
-function createContact(uid, contactData) {
+function createContact(contactData) {
   const token = localStorage.getItem("idToken");
-  const path = `users/${uid}/contacts.json?auth=${token}`;
+  const path = `contacts.json?auth=${token}`;
 
   return fetch(baseUrl + path, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(contactData),
-  });
+  }).then(checkContactResponse);
 }
-
 
 function deleteContact(uid, contactId) {
   const token = localStorage.getItem("idToken");
-  const path = `users/${uid}/contacts/${contactId}.json?auth=${token}`;
+  const path = `contacts/${contactId}.json?auth=${token}`;
 
   return fetch(baseUrl + path, {
     method: "DELETE",
-  });
+  }).then(checkContactResponse);
 }
-
 
 function updateContact(uid, contactId, contactData) {
   const token = localStorage.getItem("idToken");
-  const path = `users/${uid}/contacts/${contactId}.json?auth=${token}`;
+  const path = `contacts/${contactId}.json?auth=${token}`;
 
   return fetch(baseUrl + path, {
     method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(contactData),
-  });
+  }).then(checkContactResponse);
 }
 
+function checkContactResponse(response) {
+  if (!response.ok) {
+    throw new Error(`Firebase error: ${response.status}`);
+  }
+
+  return response.json();
+}
 
 function updateOwnUser(uid, userData) {
   const token = localStorage.getItem("idToken");
@@ -42,45 +52,47 @@ function updateOwnUser(uid, userData) {
 
   return fetch(baseUrl + path, {
     method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(userData),
   });
 }
-
 
 function getRandomContactColor() {
   const randomIndex = Math.floor(Math.random() * 15) + 1;
   return "--contact_color_" + randomIndex;
 }
 
-
 function generateContact(name, email, phone) {
-  const uid = localStorage.getItem("uid");
-
-  return createContact(uid, {
+  const contactData = {
     name,
     email,
     phone,
     color: getRandomContactColor(),
-  });
+  };
+
+  return createContact(contactData);
 }
 
-
 async function loadContacts(uid) {
-  const contacts = await loadContactsData(uid);
+  const contacts = await loadContactsData();
   const ownUser = await loadOwnContact(uid);
 
   saveAndRenderContacts(contacts, ownUser);
 }
 
-
-async function loadContactsData(uid) {
+async function loadContactsData() {
   const token = localStorage.getItem("idToken");
-  const path = `users/${uid}/contacts.json?auth=${token}`;
+  const path = `contacts.json?auth=${token}`;
   const response = await fetch(baseUrl + path);
+
+  if (!response.ok) {
+    throw new Error(`Firebase error: ${response.status}`);
+  }
 
   return response.json();
 }
-
 
 async function loadOwnContact(uid) {
   if (localStorage.getItem("isGuest") === "true") {
@@ -91,15 +103,17 @@ async function loadOwnContact(uid) {
   return createOwnContact(user, uid);
 }
 
-
 async function getOwnUserData(uid) {
   const token = localStorage.getItem("idToken");
   const path = `users/${uid}.json?auth=${token}`;
   const response = await fetch(baseUrl + path);
 
+  if (!response.ok) {
+    throw new Error(`Firebase error: ${response.status}`);
+  }
+
   return response.json();
 }
-
 
 function createOwnContact(user, uid) {
   if (!user) return null;
@@ -114,7 +128,6 @@ function createOwnContact(user, uid) {
   };
 }
 
-
 function mapContactsToArray(data) {
   if (!data) return [];
 
@@ -126,7 +139,6 @@ function mapContactsToArray(data) {
   });
 }
 
-
 function saveAndRenderContacts(data, ownUser = null) {
   state.contacts = mapContactsToArray(data);
   state.ownUser = ownUser;
@@ -135,11 +147,9 @@ function saveAndRenderContacts(data, ownUser = null) {
   renderContactsList(state.contacts);
 }
 
-
 function findContactById(contacts, id) {
   return contacts.find((contact) => contact.id === id);
 }
-
 
 function getContactById(contactId) {
   if (state.ownUser?.id === contactId) {
@@ -148,7 +158,6 @@ function getContactById(contactId) {
 
   return findContactById(state.contacts, contactId);
 }
-
 
 function createOwnUserUpdateData(contact) {
   return {
