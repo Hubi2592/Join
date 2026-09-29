@@ -8,7 +8,9 @@
   display: none;
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1399px) {
+/* Compact Desktop */
+
+@media screen and (min-width: 1251px) and (max-width: 1399px) {
   .contacts_container {
     width: 380px;
   }
@@ -16,15 +18,16 @@
   .contact_details_container {
     min-width: 0;
     margin-left: 0;
-    padding: 40px 32px;
+    padding: 40px 64px;
     overflow: hidden;
   }
 
   .contact_detail_header {
-    flex-direction: column;
-    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: flex-start;
-    gap: 6px;
+    gap: 16px;
     width: 100%;
     height: auto;
     margin-top: 48px;
@@ -43,47 +46,62 @@
   }
 
   .contact_detail_header .seperator_line {
-    width: 64px;
-    height: 3px;
-    margin: 4px 0;
+    width: 3px;
+    height: 48px;
+    margin: 0;
   }
 
   .contact_card {
     width: 100%;
     min-width: 0;
-    margin-top: 40px;
+    margin-top: 48px;
   }
 
   .contact_card_header {
-    gap: 24px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
     width: 100%;
     min-width: 0;
+    margin-bottom: 40px;
   }
 
   .contact_card_color {
-    width: 96px;
-    height: 96px;
-    font-size: 40px;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    font-size: 32px;
+  }
+
+  .contact_card_header > div:last-child {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
   }
 
   .contact_card_header h2 {
-    font-size: 40px;
-    overflow-wrap: anywhere;
+    margin: 0;
+    font-size: 32px;
+    line-height: 1.15;
+    white-space: normal;
   }
 
   .contact_card_buttons {
+    display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 16px;
+    margin-top: 8px;
   }
 
   .contact_buttons {
     gap: 6px;
-    margin-top: 8px;
-    font-size: 18px;
+    margin-top: 0;
+    font-size: 24px;
   }
 
   .contact_buttons img {
-    width: 20px;
+    width: 18px;
     margin-right: 2px;
   }
 
@@ -93,18 +111,20 @@
   }
 
   .contact_card_info .subtitle {
-    margin-bottom: 32px;
+    margin: 0 0 32px;
     font-size: 24px;
   }
 
   .contact_card_info .detail_label {
+    margin: 20px 0 8px;
     font-size: 18px;
   }
 
   .contact_card_info .detail_value {
     max-width: 100%;
+    margin: 0;
     font-size: 18px;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 
   .contact_item {
@@ -120,9 +140,9 @@
   }
 }
 
-/* Mobile */
+/* Mobile / Tablet */
 
-@media screen and (max-width: 1023px) {
+@media screen and (max-width: 1250px) {
   body {
     overflow: auto;
   }
@@ -233,6 +253,26 @@
     display: none;
   }
 
+  .own_user {
+    flex-shrink: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0 0 12px;
+    border-bottom: 1px solid var(--menu_color);
+  }
+
+  .own_user:empty {
+    display: none;
+    padding: 0;
+    border: none;
+  }
+
+  .own_user .contact_item {
+    width: 100%;
+    margin: 0;
+    padding: 12px 16px;
+  }
+
   .contacts_list {
     flex: 1;
     width: 100%;
@@ -312,7 +352,7 @@
     filter: brightness(0) invert(1);
   }
 
-   /* Contact details */
+  /* Contact details */
 
   .contact_details_container {
     position: relative;
@@ -322,6 +362,7 @@
     min-height: calc(100dvh - 160px);
     margin: 0;
     padding: 32px 22px 110px;
+    overflow-y: auto;
   }
 
   .contact_details_container.mobile_detail_open {
@@ -333,10 +374,10 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 4px;
+    gap: 6px;
     width: 100%;
     height: auto;
-    margin: 0 0 28px;
+    margin: 0 0 36px;
   }
 
   .contact_title_row {
@@ -380,5 +421,4 @@
     width: 24px;
     height: 24px;
   }
-
 }

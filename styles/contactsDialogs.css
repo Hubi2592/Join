@@ -118,10 +118,10 @@
 .add_contact_content .field_icon {
   position: absolute;
   right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 24px;
   width: 18px;
   height: 18px;
+  transform: translateY(-50%);
   pointer-events: none;
 }
 

@@ -8,6 +8,7 @@ function handleContactClick(event) {
   );
 
   showContactDetail(contact);
+  highlightContact(contact.id);
   openMobileContactDetail();
 }
 
@@ -17,6 +18,7 @@ function handleOwnUserClick(event) {
   if (!item || !state.ownUser) return;
 
   showContactDetail(state.ownUser);
+  highlightContact(state.ownUser.id);
   openMobileContactDetail();
 }
 
@@ -166,6 +168,7 @@ function finishOwnUserEdit(uid) {
 
   loadContacts(uid).then(() => {
     showContactDetail(state.ownUser);
+    highlightContact(state.ownUser.id);
     loadOwnProfile(uid);
   });
 }
@@ -175,6 +178,7 @@ function finishEditContact(uid, contactId) {
 
   loadContacts(uid).then(() => {
     showContactDetail(getContactById(contactId));
+    highlightContact(contactId);
   });
 }
 
@@ -225,7 +229,7 @@ function validateContactName(id) {
 function validateContactEmail(id) {
   const input = document.getElementById(id);
   const value = input.value.trim();
-  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  const valid = isValidContactEmail(value);
 
   setContactError(
     id,
@@ -233,6 +237,13 @@ function validateContactEmail(id) {
   );
 
   return valid;
+}
+
+function isValidContactEmail(email) {
+  const pattern =
+    /^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,6}$/;
+
+  return pattern.test(email);
 }
 
 function validateContactPhone(id) {
@@ -330,4 +341,20 @@ function registerContactListeners() {
   list.addEventListener("click", handleContactClick);
   ownUser.addEventListener("click", handleOwnUserClick);
   card.addEventListener("click", handleContactCardClick);
+}
+
+function highlightContact(contactId) {
+  clearContactHighlights();
+
+  const item = document.querySelector(
+    `[data-contact-id="${contactId}"]`
+  );
+
+  if (item) item.classList.add("contact_item_active");
+}
+
+function clearContactHighlights() {
+  document.querySelectorAll(".contact_item_active").forEach((item) => {
+    item.classList.remove("contact_item_active");
+  });
 }
