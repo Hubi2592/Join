@@ -213,6 +213,13 @@ function validateEditContact() {
   return name && email && phone;
 }
 
+function isValidContactEmail(email) {
+  const pattern =
+    /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(de|com|net|org|info|eu)$/i;
+
+  return pattern.test(email.trim());
+}
+
 function validateContactName(id) {
   const input = document.getElementById(id);
   const value = input.value.trim();
@@ -229,21 +236,32 @@ function validateContactName(id) {
 function validateContactEmail(id) {
   const input = document.getElementById(id);
   const value = input.value.trim();
+
+  if (!value) {
+    setContactError(id, "Please enter an email address.");
+    return false;
+  }
+
+  if (!isValidContactEmail(value)) {
+    setContactError(id, "Please enter a valid email address.");
+    return false;
+  }
+
+  setContactError(id, "");
+  return true;
+}
+
+function validateContactEmail(id) {
+  const input = document.getElementById(id);
+  const value = input.value.trim();
   const valid = isValidContactEmail(value);
 
   setContactError(
     id,
-    valid ? "" : "Please enter a valid email."
+    valid ? "" : "Please enter a valid email address."
   );
 
   return valid;
-}
-
-function isValidContactEmail(email) {
-  const pattern =
-    /^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,6}$/;
-
-  return pattern.test(email);
 }
 
 function validateContactPhone(id) {

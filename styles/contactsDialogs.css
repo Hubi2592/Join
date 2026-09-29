@@ -92,6 +92,9 @@
 
 .add_contact_content .form_group {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .sr_only {
@@ -264,4 +267,16 @@
   background-color: var(--main_color);
   font-size: 24px;
   animation: fly_in 0.4s ease-out;
+}
+
+.add_contact_content .error_message {
+  display: block;
+  width: 100%;
+  min-height: 16px;
+  margin: 4px 0 0;
+  padding: 0 4px;
+  color: #ff3d00;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: left;
 }
