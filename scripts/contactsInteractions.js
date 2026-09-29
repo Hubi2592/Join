@@ -269,16 +269,32 @@ function setContactError(id, message) {
   input.classList.toggle("input_error", Boolean(message));
 }
 function restrictNameInput(event) {
-  event.target.value = event.target.value.replace(
+  const input = event.target;
+  const hasNumber = /[0-9]/.test(input.value);
+
+  input.value = input.value.replace(
     /[^A-Za-zÄÖÜäöüßÀ-ÿ' -]/g,
     ""
+  );
+
+  setContactError(
+    input.id,
+    hasNumber ? "You cannot enter numbers in a name." : ""
   );
 }
 
 function restrictPhoneInput(event) {
-  event.target.value = event.target.value.replace(
+  const input = event.target;
+  const hasLetter = /[A-Za-zÄÖÜäöüßÀ-ÿ]/.test(input.value);
+
+  input.value = input.value.replace(
     /[^0-9+\-() ]/g,
     ""
+  );
+
+  setContactError(
+    input.id,
+    hasLetter ? "You cannot enter letters in a phone number." : ""
   );
 }
 
