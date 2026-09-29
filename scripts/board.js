@@ -37,19 +37,62 @@ async function sortReference(reference) {
   checkAmount("done");
 }
 
-function dragTicket(id) {
+function dragTicket(id, event) {
   draggedTicket = id;
+  event.currentTarget.classList.add("dragging");
 }
 
 async function changeStatus(listKey) {
+  clearDropFeedback();
+
   const myArray = await getTickets("/tickets");
   const ticket = { ...myArray[draggedTicket], status: listKey };
+
   await putTicket("/tickets/" + draggedTicket, ticket);
-  await sortReference(myArray.map((item) => (item.id === draggedTicket ? ticket : item)));
+
+  await sortReference(
+    myArray.map((item) =>
+      item.id === draggedTicket ? ticket : item
+    )
+  );
 }
 
 function allowDrop(event) {
   event.preventDefault();
+
+  const column = event.currentTarget;
+  clearDropFeedback();
+
+  if (column.id === getDraggedStatus()) {
+    column.classList.add("drop_not_allowed");
+    return;
+  }
+
+  column.classList.add("drop_allowed");
+}
+
+function getDraggedStatus() {
+  for (const key of Object.keys(taskList)) {
+    const found = taskList[key].some(
+      (task) => task.id === draggedTicket
+    );
+
+    if (found) return key;
+  }
+
+  return "";
+}
+
+function clearDropFeedback() {
+  document.querySelectorAll(".column").forEach((column) => {
+    column.classList.remove("drop_allowed");
+    column.classList.remove("drop_not_allowed");
+  });
+}
+
+function handleDragEnd(event) {
+  event.currentTarget.classList.remove("dragging");
+  clearDropFeedback();
 }
 
 async function sort(arr) {

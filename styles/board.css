@@ -300,3 +300,25 @@ h5 {
     75%  { transform: rotate(-2deg); }
     100% { transform: rotate(0deg); }
 }
+
+.column {
+  border: 2px solid transparent;
+  border-radius: 16px;
+  transition:
+    border-color 125ms ease,
+    background-color 125ms ease;
+}
+
+.column.drop_allowed {
+  border: 2px dashed var(--add_hover);
+  background-color: rgba(41, 171, 226, 0.08);
+}
+
+.column.drop_not_allowed {
+  border: 2px dashed var(--border_color);
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.something.dragging .board_card {
+  box-shadow: none;
+}
