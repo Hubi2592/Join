@@ -64,25 +64,52 @@ function removeAssignedUsers(name) {
 
 async function updateAssigned() {
   const assignedRef = document.getElementById("assignedUser");
+  if (!assignedRef) return;
 
-  assignedRef.innerHTML = "";
-
-  for (const user of assigned) {
-    assignedRef.innerHTML += await contactInitials(user);
-  }
+  assignedRef.innerHTML = await createAssignedPreview();
 }
 
-function validateAssign(name) {
-  const contact = document.getElementById(name);
+async function createAssignedPreview() {
+  const visibleUsers = assigned.slice(0, 3);
+  let html = "";
 
-  if (!contact) return;
+  for (const user of visibleUsers) {
+    html += await contactInitials(user);
+  }
 
-  contact.classList.toggle("assigned_button");
+  return html + createAssignedCounter();
+}
+
+function createAssignedCounter() {
+  const remaining = assigned.length - 3;
+  if (remaining <= 0) return "";
+
+  return `
+    <div class="contact_color assigned_counter">
+      +${remaining}
+    </div>
+  `;
 }
 
 function resetAssigned() {
-  const assignedRef = document.getElementById("assignedUser");
-
-  assignedRef.innerHTML = "";
   assigned = [];
+  clearAssignedPreview();
+  resetAssignedContacts();
+}
+
+function clearAssignedPreview() {
+  const assignedRef = document.getElementById("assignedUser");
+  if (assignedRef) assignedRef.innerHTML = "";
+}
+
+function resetAssignedContacts() {
+  document.querySelectorAll(".select_contacts_option").forEach((contact) => {
+    contact.classList.remove("assigned_button");
+    resetAssignedCheckbox(contact);
+  });
+}
+
+function resetAssignedCheckbox(contact) {
+  const checkbox = contact.querySelector(".subtask_checkbox");
+  if (checkbox) checkbox.checked = false;
 }

@@ -153,6 +153,15 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+.assigned_counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background-color: var(--main_color);
+  color: white;
+  font-weight: 600;
+}
 .assigned_button {
   color: white;
   background-color: var(--main_color);

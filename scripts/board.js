@@ -102,9 +102,36 @@ async function readAssigned(arr, index) {
 }
 
 async function addInitials(arr, index) {
-  const assignedArray = Array.isArray(arr[index]?.assigned) ? arr[index]?.assigned : [];
-  let asArr = await Promise.all(assignedArray.map(async (contact) => await contactInitials(contact)));
-  return asArr.join("");
+  const assignedArray = getAssignedUsers(arr, index);
+  const visibleUsers = assignedArray.slice(0, 3);
+  const initials = await createInitialsHtml(visibleUsers);
+
+  return initials + createAssignedCounter(assignedArray.length);
+}
+
+function getAssignedUsers(arr, index) {
+  if (!Array.isArray(arr[index]?.assigned)) return [];
+
+  return arr[index].assigned;
+}
+
+async function createInitialsHtml(users) {
+  const html = await Promise.all(
+    users.map((user) => contactInitials(user))
+  );
+
+  return html.join("");
+}
+
+function createAssignedCounter(amount) {
+  const remaining = amount - 3;
+  if (remaining <= 0) return "";
+
+  return `
+    <div class="contact_color assigned_counter">
+      +${remaining}
+    </div>
+  `;
 }
 
 function readSubtask(arr, index) {
@@ -307,14 +334,13 @@ async function setData(arr, index) {
 
 async function setAssigned(arr, index) {
   const assignedRef = document.getElementById("assignedUser");
-  if (await readDatabase(arr, index, 'assigned') === undefined) {
-    assigned = [];
-  } else {
-    assigned = await readDatabase(arr, index, 'assigned');
-  }
-  for (let subindex = 0; subindex < assigned.length; subindex++) {
-    assignedRef.innerHTML += await contactInitials(assigned[subindex]);
-  }
+  const storedAssigned = await readDatabase(arr, index, "assigned");
+
+  assigned = Array.isArray(storedAssigned) ? storedAssigned : [];
+
+  if (!assignedRef) return;
+
+  assignedRef.innerHTML = await createAssignedPreview();
 }
 
 async function setCategory(arr, index) {
