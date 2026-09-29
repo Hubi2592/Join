@@ -44,10 +44,23 @@
     width: 100%;
   }
   .column_list {
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
     width: 100%;
-    height: 300px;
-    overflow-x: auto;
+    height: auto;
+    overflow: visible;
+  }
+  .column_list > li {
+    width: 100%;
+  }
+
+  .something {
+    width: 100%;
+  }
+
+  .board_card {
+    width: 100%;
   }
   .nothing {
     width: 100%;
@@ -70,7 +83,7 @@
     font-size: 36px;
   }
   .task_board p {
-  font-size: 1rem;
+    font-size: 1rem;
   }
   .swap_mobile {
     display: flex;
@@ -85,12 +98,12 @@
   .add_task {
     padding: 32px 16px;
   }
-  .add_task_head{
+  .add_task_head {
     display: none;
   }
 }
 
-@media screen and (min-width: 320px) and (max-width: 374px){
+@media screen and (min-width: 320px) and (max-width: 374px) {
   .task_board_dialog {
     max-width: 300px;
     max-height: 600px;
@@ -98,6 +111,11 @@
   .add_task_dialog {
     max-height: 600px;
   }
+  .column {
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+}
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1439px) {
