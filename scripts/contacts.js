@@ -1,3 +1,6 @@
+/**
+ * Initializes the contacts page.
+ */
 function initContacts() {
   const uid = localStorage.getItem("uid");
 
@@ -11,6 +14,10 @@ function initContacts() {
 }
 
 
+/**
+ * Initializes all contact page components.
+ * @param {string} uid - Current user ID.
+ */
 function initializeContactsPage(uid) {
   loadOwnProfile(uid);
   injectAddContactDialog();
@@ -20,6 +27,11 @@ function initializeContactsPage(uid) {
 }
 
 
+/**
+ * Sorts contacts alphabetically by name.
+ * @param {Array} contacts - Contacts to sort.
+ * @returns {Array} Sorted contacts.
+ */
 function sortContactsByName(contacts) {
   return [...contacts].sort((a, b) => {
     return a.name.localeCompare(b.name);
@@ -27,6 +39,11 @@ function sortContactsByName(contacts) {
 }
 
 
+/**
+ * Groups contacts by their first letter.
+ * @param {Array} contacts - Contacts to group.
+ * @returns {Object} Grouped contacts.
+ */
 function groupContactsByLetter(contacts) {
   const groups = {};
 
@@ -38,6 +55,11 @@ function groupContactsByLetter(contacts) {
 }
 
 
+/**
+ * Adds a contact to its alphabetical group.
+ * @param {Object} groups - Contact groups.
+ * @param {Object} contact - Contact to add.
+ */
 function addContactToGroup(groups, contact) {
   const letter = contact.name.charAt(0).toUpperCase();
 
@@ -49,11 +71,20 @@ function addContactToGroup(groups, contact) {
 }
 
 
+/**
+ * Creates the header for a contact group.
+ * @param {string} letter - Group letter.
+ * @returns {string} Header HTML.
+ */
 function contactGroupHeaderTemplate(letter) {
   return `<li class="contact_group_header">${letter}</li>`;
 }
 
 
+/**
+ * Renders the complete contacts list.
+ * @param {Array} contacts - Contacts to render.
+ */
 function renderContactsList(contacts) {
   const list = document.getElementById("contactsList");
   const sorted = sortContactsByName(contacts);
@@ -63,6 +94,11 @@ function renderContactsList(contacts) {
 }
 
 
+/**
+ * Creates the HTML for all contact groups.
+ * @param {Object} grouped - Grouped contacts.
+ * @returns {string} Contacts list HTML.
+ */
 function createContactsListHtml(grouped) {
   return Object.keys(grouped)
     .sort()
@@ -71,6 +107,12 @@ function createContactsListHtml(grouped) {
 }
 
 
+/**
+ * Creates the HTML for one contact group.
+ * @param {string} letter - Group letter.
+ * @param {Array} contacts - Contacts in the group.
+ * @returns {string} Contact group HTML.
+ */
 function createContactGroupHtml(letter, contacts) {
   const header = contactGroupHeaderTemplate(letter);
   const items = contacts.map(contactsListItemTemplate).join("");
@@ -79,6 +121,10 @@ function createContactGroupHtml(letter, contacts) {
 }
 
 
+/**
+ * Renders the current user in the contacts list.
+ * @param {Object|null} user - Current user data.
+ */
 function renderOwnUser(user) {
   const container = document.getElementById("ownUser");
   if (!container) return;
@@ -89,6 +135,10 @@ function renderOwnUser(user) {
 }
 
 
+/**
+ * Displays the details of a contact.
+ * @param {Object} contact - Contact to display.
+ */
 function showContactDetail(contact) {
   if (!contact) return;
 
@@ -97,6 +147,9 @@ function showContactDetail(contact) {
 }
 
 
+/**
+ * Clears the contact detail view.
+ */
 function clearContactDetail() {
   const card = document.getElementById("contactCard");
 
@@ -105,6 +158,9 @@ function clearContactDetail() {
 }
 
 
+/**
+ * Opens the contact detail view on mobile devices.
+ */
 function openMobileContactDetail() {
   if (window.innerWidth >= 1251) return;
 
@@ -116,6 +172,9 @@ function openMobileContactDetail() {
 }
 
 
+/**
+ * Closes the contact detail view on mobile devices.
+ */
 function closeMobileContactDetail() {
   const list = document.querySelector(".contacts_container");
   const details = document.querySelector(".contact_details_container");
@@ -125,6 +184,9 @@ function closeMobileContactDetail() {
 }
 
 
+/**
+ * Inserts the add contact dialog into the page.
+ */
 function injectAddContactDialog() {
   const mainContent = document.querySelector(".main_content");
 
@@ -135,6 +197,10 @@ function injectAddContactDialog() {
 }
 
 
+/**
+ * Inserts the edit contact dialog into the page.
+ * @param {Object} contact - Contact to edit.
+ */
 function injectEditContactDialog(contact) {
   removeEditContactDialog();
 
@@ -147,6 +213,9 @@ function injectEditContactDialog(contact) {
 }
 
 
+/**
+ * Removes the edit contact dialog.
+ */
 function removeEditContactDialog() {
   const dialog = document.getElementById("editContact");
 
@@ -156,6 +225,9 @@ function removeEditContactDialog() {
 }
 
 
+/**
+ * Opens the edit contact dialog.
+ */
 function openEditContactDialog() {
   const dialog = document.getElementById("editContact");
 
@@ -164,6 +236,9 @@ function openEditContactDialog() {
 }
 
 
+/**
+ * Closes the edit contact dialog.
+ */
 function closeEditContactDialog() {
   const dialog = document.getElementById("editContact");
 
@@ -171,6 +246,9 @@ function closeEditContactDialog() {
 }
 
 
+/**
+ * Opens the add contact dialog.
+ */
 function openAddContactDialog() {
   const dialog = document.getElementById("addContact");
 
@@ -179,6 +257,9 @@ function openAddContactDialog() {
 }
 
 
+/**
+ * Closes the add contact dialog.
+ */
 function closeAddContactDialog() {
   const dialog = document.getElementById("addContact");
 
@@ -186,6 +267,9 @@ function closeAddContactDialog() {
 }
 
 
+/**
+ * Toggles the mobile contact action menu.
+ */
 function toggleMobileContactMenu() {
   const menu = document.querySelector(".contact_mobile_menu");
   if (!menu) return;
@@ -194,6 +278,9 @@ function toggleMobileContactMenu() {
 }
 
 
+/**
+ * Closes the mobile contact action menu.
+ */
 function closeMobileContactMenu() {
   const menu = document.querySelector(".contact_mobile_menu");
   if (!menu) return;
@@ -202,6 +289,9 @@ function closeMobileContactMenu() {
 }
 
 
+/**
+ * Shows the success overlay temporarily.
+ */
 function showSuccessOverlay() {
   const overlay = document.getElementById("successOverlay");
 

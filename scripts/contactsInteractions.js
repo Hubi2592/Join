@@ -1,3 +1,7 @@
+/**
+ * Handles clicks on regular contacts.
+ * @param {Event} event - Click event.
+ */
 function handleContactClick(event) {
   const item = event.target.closest(".contact_item");
   if (!item) return;
@@ -12,6 +16,10 @@ function handleContactClick(event) {
   openMobileContactDetail();
 }
 
+/**
+ * Handles clicks on the current user contact.
+ * @param {Event} event - Click event.
+ */
 function handleOwnUserClick(event) {
   const item = event.target.closest(".contact_item");
 
@@ -22,6 +30,10 @@ function handleOwnUserClick(event) {
   openMobileContactDetail();
 }
 
+/**
+ * Deletes a contact.
+ * @param {string} contactId - Contact ID.
+ */
 function handleDeleteContact(contactId) {
   const contact = findContactById(state.contacts, contactId);
   if (!contact) return;
@@ -33,12 +45,20 @@ function handleDeleteContact(contactId) {
   });
 }
 
+/**
+ * Updates the UI after deleting a contact.
+ * @param {string} uid - Current user ID.
+ */
 function finishDeleteContact(uid) {
   clearContactDetail();
   closeMobileContactDetail();
   loadContacts(uid);
 }
 
+/**
+ * Handles actions inside the contact detail card.
+ * @param {Event} event - Click event.
+ */
 function handleContactCardClick(event) {
   const actionButton = event.target.closest("[data-action]");
 
@@ -50,6 +70,10 @@ function handleContactCardClick(event) {
   handleDesktopContactAction(event);
 }
 
+/**
+ * Handles desktop contact actions.
+ * @param {Event} event - Click event.
+ */
 function handleDesktopContactAction(event) {
   const editButton = event.target.closest("#editContactButton");
   const deleteButton = event.target.closest("#deleteContactButton");
@@ -63,6 +87,10 @@ function handleDesktopContactAction(event) {
   }
 }
 
+/**
+ * Handles a mobile contact action.
+ * @param {HTMLElement} button - Selected action button.
+ */
 function handleMobileContactAction(button) {
   const action = button.dataset.action;
 
@@ -79,16 +107,28 @@ function handleMobileContactAction(button) {
   }
 }
 
+/**
+ * Opens the edit dialog from the mobile menu.
+ * @param {HTMLElement} button - Edit button.
+ */
 function openMobileEdit(button) {
   closeMobileContactMenu();
   handleEditContact(button.dataset.contactId);
 }
 
+/**
+ * Deletes a contact from the mobile menu.
+ * @param {HTMLElement} button - Delete button.
+ */
 function deleteMobileContact(button) {
   closeMobileContactMenu();
   handleDeleteContact(button.dataset.contactId);
 }
 
+/**
+ * Handles submission of the add contact form.
+ * @param {Event} event - Submit event.
+ */
 function handleAddContactSubmit(event) {
   event.preventDefault();
 
@@ -101,6 +141,10 @@ function handleAddContactSubmit(event) {
     .then(() => finishAddContact(uid));
 }
 
+/**
+ * Gets values from the add contact form.
+ * @returns {Object} Contact form data.
+ */
 function getAddContactFormData() {
   return {
     name: document.getElementById("contactName").value.trim(),
@@ -109,6 +153,10 @@ function getAddContactFormData() {
   };
 }
 
+/**
+ * Updates the UI after adding a contact.
+ * @param {string} uid - Current user ID.
+ */
 function finishAddContact(uid) {
   document.getElementById("addContactForm").reset();
 
@@ -117,6 +165,10 @@ function finishAddContact(uid) {
   showSuccessOverlay();
 }
 
+/**
+ * Opens the edit dialog for a contact.
+ * @param {string} contactId - Contact ID.
+ */
 function handleEditContact(contactId) {
   const contact = getContactById(contactId);
   if (!contact) return;
@@ -126,6 +178,10 @@ function handleEditContact(contactId) {
   openEditContactDialog();
 }
 
+/**
+ * Handles submission of the edit contact form.
+ * @param {Event} event - Submit event.
+ */
 function handleEditContactSubmit(event) {
   event.preventDefault();
 
@@ -140,6 +196,12 @@ function handleEditContactSubmit(event) {
   saveEditedContact(uid, contact, data);
 }
 
+/**
+ * Saves an edited contact.
+ * @param {string} uid - Current user ID.
+ * @param {Object} contact - Existing contact.
+ * @param {Object} data - Updated contact data.
+ */
 function saveEditedContact(uid, contact, data) {
   if (contact.isOwnUser) {
     saveOwnUserEdit(uid, data.contact);
@@ -149,12 +211,22 @@ function saveEditedContact(uid, contact, data) {
   saveNormalContactEdit(uid, data);
 }
 
+/**
+ * Saves changes to a regular contact.
+ * @param {string} uid - Current user ID.
+ * @param {Object} data - Updated contact data.
+ */
 function saveNormalContactEdit(uid, data) {
   updateContact(uid, data.id, data.contact).then(() => {
     finishEditContact(uid, data.id);
   });
 }
 
+/**
+ * Saves changes to the current user.
+ * @param {string} uid - Current user ID.
+ * @param {Object} contact - Updated contact data.
+ */
 function saveOwnUserEdit(uid, contact) {
   const userData = createOwnUserUpdateData(contact);
 
@@ -163,6 +235,10 @@ function saveOwnUserEdit(uid, contact) {
   });
 }
 
+/**
+ * Updates the UI after editing the current user.
+ * @param {string} uid - Current user ID.
+ */
 function finishOwnUserEdit(uid) {
   removeEditContactDialog();
 
@@ -173,6 +249,11 @@ function finishOwnUserEdit(uid) {
   });
 }
 
+/**
+ * Updates the UI after editing a regular contact.
+ * @param {string} uid - Current user ID.
+ * @param {string} contactId - Edited contact ID.
+ */
 function finishEditContact(uid, contactId) {
   removeEditContactDialog();
 
@@ -182,6 +263,10 @@ function finishEditContact(uid, contactId) {
   });
 }
 
+/**
+ * Gets the complete edit form data.
+ * @returns {Object} Edit form data.
+ */
 function getEditContactFormData() {
   return {
     id: document.getElementById("editContactId").value,
@@ -189,6 +274,10 @@ function getEditContactFormData() {
   };
 }
 
+/**
+ * Gets the editable contact values.
+ * @returns {Object} Contact values.
+ */
 function getEditContactValues() {
   return {
     name: document.getElementById("editContactName").value.trim(),
@@ -197,6 +286,10 @@ function getEditContactValues() {
   };
 }
 
+/**
+ * Validates the add contact form.
+ * @returns {boolean} Whether the form is valid.
+ */
 function validateAddContact() {
   const name = validateContactName("contactName");
   const email = validateContactEmail("contactEmail");
@@ -205,6 +298,10 @@ function validateAddContact() {
   return name && email && phone;
 }
 
+/**
+ * Validates the edit contact form.
+ * @returns {boolean} Whether the form is valid.
+ */
 function validateEditContact() {
   const name = validateContactName("editContactName");
   const email = validateContactEmail("editContactEmail");
@@ -213,6 +310,11 @@ function validateEditContact() {
   return name && email && phone;
 }
 
+/**
+ * Checks whether an email address is valid.
+ * @param {string} email - Email address.
+ * @returns {boolean} Whether the email is valid.
+ */
 function isValidContactEmail(email) {
   const pattern =
     /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(de|com|net|org|info|eu)$/i;
@@ -220,6 +322,11 @@ function isValidContactEmail(email) {
   return pattern.test(email.trim());
 }
 
+/**
+ * Validates a contact name.
+ * @param {string} id - Input element ID.
+ * @returns {boolean} Whether the name is valid.
+ */
 function validateContactName(id) {
   const input = document.getElementById(id);
   const value = input.value.trim();
@@ -233,6 +340,11 @@ function validateContactName(id) {
   return valid;
 }
 
+/**
+ * Validates a contact email address.
+ * @param {string} id - Input element ID.
+ * @returns {boolean} Whether the email is valid.
+ */
 function validateContactEmail(id) {
   const input = document.getElementById(id);
   const value = input.value.trim();
@@ -251,6 +363,11 @@ function validateContactEmail(id) {
   return true;
 }
 
+/**
+ * Validates a contact email address.
+ * @param {string} id - Input element ID.
+ * @returns {boolean} Whether the email is valid.
+ */
 function validateContactEmail(id) {
   const input = document.getElementById(id);
   const value = input.value.trim();
@@ -264,6 +381,11 @@ function validateContactEmail(id) {
   return valid;
 }
 
+/**
+ * Validates a contact phone number.
+ * @param {string} id - Input element ID.
+ * @returns {boolean} Whether the phone number is valid.
+ */
 function validateContactPhone(id) {
   const input = document.getElementById(id);
   const value = input.value.trim();
@@ -277,6 +399,11 @@ function validateContactPhone(id) {
   return valid;
 }
 
+/**
+ * Displays or clears an input error.
+ * @param {string} id - Input element ID.
+ * @param {string} message - Error message.
+ */
 function setContactError(id, message) {
   const input = document.getElementById(id);
   const error = document.getElementById(id + "Error");
@@ -286,6 +413,11 @@ function setContactError(id, message) {
   error.textContent = message;
   input.classList.toggle("input_error", Boolean(message));
 }
+
+/**
+ * Prevents invalid characters in contact names.
+ * @param {Event} event - Input event.
+ */
 function restrictNameInput(event) {
   const input = event.target;
   const hasNumber = /[0-9]/.test(input.value);
@@ -301,6 +433,10 @@ function restrictNameInput(event) {
   );
 }
 
+/**
+ * Prevents invalid characters in phone numbers.
+ * @param {Event} event - Input event.
+ */
 function restrictPhoneInput(event) {
   const input = event.target;
   const hasLetter = /[A-Za-zÄÖÜäöüßÀ-ÿ]/.test(input.value);
@@ -316,6 +452,10 @@ function restrictPhoneInput(event) {
   );
 }
 
+/**
+ * Handles deleting a contact from the edit dialog.
+ * @param {Event} event - Click event.
+ */
 function handleEditDelete(event) {
   const contactId = event.currentTarget.dataset.contactId;
 
@@ -323,6 +463,9 @@ function handleEditDelete(event) {
   closeAnimation(document.getElementById("editContact"));
 }
 
+/**
+ * Registers event listeners for the edit dialog.
+ */
 function registerEditDialogListeners() {
   const form = document.getElementById("editContactForm");
   const close = document.getElementById("closeEditContactButton");
@@ -336,12 +479,18 @@ function registerEditDialogListeners() {
   }
 }
 
+/**
+ * Registers all contact dialog listeners.
+ */
 function registerDialogListeners() {
   registerAddContactForm();
   registerAddContactButtons();
   registerCloseContactButtons();
 }
 
+/**
+ * Registers the add contact form listener.
+ */
 function registerAddContactForm() {
   const form = document.getElementById("addContactForm");
 
@@ -351,6 +500,9 @@ function registerAddContactForm() {
   );
 }
 
+/**
+ * Registers buttons that open the add contact dialog.
+ */
 function registerAddContactButtons() {
   const desktop = document.getElementById("addContactButton");
   const mobile = document.getElementById("mobileAddContactButton");
@@ -359,6 +511,9 @@ function registerAddContactButtons() {
   mobile.addEventListener("click", openAddContactDialog);
 }
 
+/**
+ * Registers buttons that close the add contact dialog.
+ */
 function registerCloseContactButtons() {
   const close = document.getElementById("closeAddContactButton");
   const cancel = document.getElementById("cancelAddContactButton");
@@ -367,6 +522,9 @@ function registerCloseContactButtons() {
   cancel.addEventListener("click", closeAddContactDialog);
 }
 
+/**
+ * Registers contact list and detail listeners.
+ */
 function registerContactListeners() {
   const list = document.getElementById("contactsList");
   const ownUser = document.getElementById("ownUser");
@@ -377,6 +535,10 @@ function registerContactListeners() {
   card.addEventListener("click", handleContactCardClick);
 }
 
+/**
+ * Highlights the selected contact.
+ * @param {string} contactId - Contact ID.
+ */
 function highlightContact(contactId) {
   clearContactHighlights();
 
@@ -387,6 +549,9 @@ function highlightContact(contactId) {
   if (item) item.classList.add("contact_item_active");
 }
 
+/**
+ * Removes all active contact highlights.
+ */
 function clearContactHighlights() {
   document.querySelectorAll(".contact_item_active").forEach((item) => {
     item.classList.remove("contact_item_active");

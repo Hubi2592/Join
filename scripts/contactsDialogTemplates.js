@@ -1,3 +1,7 @@
+/**
+ * Creates the add contact dialog.
+ * @returns {string} Dialog HTML.
+ */
 function addContactDialogTemplate() {
   return `
     <dialog class="add_contact_dialog" id="addContact">
@@ -18,6 +22,11 @@ function addContactDialogTemplate() {
   `;
 }
 
+
+/**
+ * Creates the add contact close button.
+ * @returns {string} Close button HTML.
+ */
 function addContactCloseTemplate() {
   return `
     <button
@@ -33,6 +42,11 @@ function addContactCloseTemplate() {
   `;
 }
 
+
+/**
+ * Creates the add contact dialog header.
+ * @returns {string} Header HTML.
+ */
 function addContactHeaderTemplate() {
   return `
     <section class="add_contact_header">
@@ -49,6 +63,11 @@ function addContactHeaderTemplate() {
   `;
 }
 
+
+/**
+ * Creates the contact placeholder.
+ * @returns {string} Placeholder HTML.
+ */
 function addContactPlaceholderTemplate() {
   return `
     <section class="contact_placeholder">
@@ -60,6 +79,11 @@ function addContactPlaceholderTemplate() {
   `;
 }
 
+
+/**
+ * Creates the input fields for a new contact.
+ * @returns {string} Contact fields HTML.
+ */
 function addContactFieldsTemplate() {
   return `
     ${contactInputTemplate(
@@ -94,6 +118,18 @@ function addContactFieldsTemplate() {
   `;
 }
 
+
+/**
+ * Creates an input field for the add contact form.
+ * @param {string} id - Input element ID.
+ * @param {string} name - Input name.
+ * @param {string} type - Input type.
+ * @param {string} label - Input label.
+ * @param {string} icon - Icon filename.
+ * @param {string} inputAction - Input event action.
+ * @param {string} blurAction - Blur event action.
+ * @returns {string} Input field HTML.
+ */
 function contactInputTemplate(
   id,
   name,
@@ -133,6 +169,11 @@ function contactInputTemplate(
   `;
 }
 
+
+/**
+ * Creates the add contact form buttons.
+ * @returns {string} Button HTML.
+ */
 function addContactButtonsTemplate() {
   return `
     <div class="footer_buttons">
@@ -154,6 +195,12 @@ function addContactButtonsTemplate() {
   `;
 }
 
+
+/**
+ * Creates the edit contact dialog.
+ * @param {Object} contact - Contact to edit.
+ * @returns {string} Dialog HTML.
+ */
 function editContactDialogTemplate(contact) {
   return `
     <dialog class="add_contact_dialog" id="editContact">
@@ -173,6 +220,11 @@ function editContactDialogTemplate(contact) {
   `;
 }
 
+
+/**
+ * Creates the edit contact close button.
+ * @returns {string} Close button HTML.
+ */
 function editContactCloseTemplate() {
   return `
     <button
@@ -188,6 +240,11 @@ function editContactCloseTemplate() {
   `;
 }
 
+
+/**
+ * Creates the edit contact dialog header.
+ * @returns {string} Header HTML.
+ */
 function editContactHeaderTemplate() {
   return `
     <section class="add_contact_header">
@@ -203,6 +260,12 @@ function editContactHeaderTemplate() {
   `;
 }
 
+
+/**
+ * Creates the avatar for the contact being edited.
+ * @param {Object} contact - Contact data.
+ * @returns {string} Avatar HTML.
+ */
 function editContactAvatarTemplate(contact) {
   return `
     <section class="contact_edit_color_spacer">
@@ -216,6 +279,12 @@ function editContactAvatarTemplate(contact) {
   `;
 }
 
+
+/**
+ * Creates the edit contact form content.
+ * @param {Object} contact - Contact data.
+ * @returns {string} Form HTML.
+ */
 function editContactFormTemplate(contact) {
   return `
     <input
@@ -229,6 +298,12 @@ function editContactFormTemplate(contact) {
   `;
 }
 
+
+/**
+ * Creates the input fields for editing a contact.
+ * @param {Object} contact - Contact data.
+ * @returns {string} Contact fields HTML.
+ */
 function editContactFieldsTemplate(contact) {
   return `
     ${editContactInputTemplate(
@@ -263,6 +338,18 @@ function editContactFieldsTemplate(contact) {
   `;
 }
 
+
+/**
+ * Creates an input field for the edit contact form.
+ * @param {string} id - Input element ID.
+ * @param {string} type - Input type.
+ * @param {string} label - Input label.
+ * @param {string} value - Current input value.
+ * @param {string} icon - Icon filename.
+ * @param {string} inputAction - Input event action.
+ * @param {string} blurAction - Blur event action.
+ * @returns {string} Input field HTML.
+ */
 function editContactInputTemplate(
   id,
   type,
@@ -302,6 +389,12 @@ function editContactInputTemplate(
   `;
 }
 
+
+/**
+ * Creates the edit contact form buttons.
+ * @param {Object} contact - Contact data.
+ * @returns {string} Button HTML.
+ */
 function editContactButtonsTemplate(contact) {
   return `
     <div class="footer_buttons">
@@ -317,6 +410,12 @@ function editContactButtonsTemplate(contact) {
   `;
 }
 
+
+/**
+ * Creates the delete button for the edit dialog.
+ * @param {Object} contact - Contact data.
+ * @returns {string} Delete button HTML or an empty string.
+ */
 function editDialogDeleteButtonTemplate(contact) {
   if (contact.isOwnUser) return "";
 
