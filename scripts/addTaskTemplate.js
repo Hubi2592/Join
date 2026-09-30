@@ -1,3 +1,9 @@
+/**
+ * Creates the HTML for a subtask.
+ * @param {string} subtask - Subtask text.
+ * @param {number} index - Subtask index.
+ * @returns {string} Subtask HTML.
+ */
 function createSubtaskTemplate(subtask, index) {
   return `
     <li class="subtasks_list_item" id="subtaskListItem${+index}">
@@ -15,6 +21,12 @@ function createSubtaskTemplate(subtask, index) {
   `;
 }
 
+/**
+ * Creates the HTML for editing a subtask.
+ * @param {string} subtext - Current subtask text.
+ * @param {number} index - Subtask index.
+ * @returns {string} Subtask edit HTML.
+ */
 function subtaskEditTemplate(subtext, index){
   return `
     <section class="edit_wrapper">
@@ -32,6 +44,12 @@ function subtaskEditTemplate(subtext, index){
   `;
 }
 
+/**
+ * Recreates the HTML for a subtask.
+ * @param {string} subtask - Subtask text.
+ * @param {number} index - Subtask index.
+ * @returns {string} Subtask HTML.
+ */
 function recreateSubtaskTemplate(subtask, index) {
   return `
     <p id="subtaskName${+index}">${escapeHtml(subtask)}</p>
@@ -47,6 +65,12 @@ function recreateSubtaskTemplate(subtask, index) {
   `
 }
 
+/**
+ * Creates the HTML for a contact selection option.
+ * @param {Object} contact - Contact data.
+ * @param {string} name - Property containing the contact name.
+ * @returns {Promise<string>} Contact selection HTML.
+ */
 async function contactsTemplate(contact, name) {
   return `
     <button class="select_contacts_option assign" id="${contact[name]}" type="button" data-value="Contact" onclick="assignedUsers('${contact[name]}', '${contact.color}'); this.classList.toggle('assigned_button'); this.querySelector('.subtask_checkbox').checked = this.classList.contains('assigned_button')">
