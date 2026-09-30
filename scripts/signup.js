@@ -3,7 +3,10 @@ const baseUrl =
 
 const apiKey = "AIzaSyBBqXuaXjnWIvN5to5PuH5jif1FhT_9KKw";
 
-// Collects references to the sign-up form fields
+/**
+ * Gets references to the sign-up form fields.
+ * @returns {Object} Sign-up form fields.
+ */
 function getFormFields() {
   return {
     username: document.getElementById("username"),
@@ -14,7 +17,10 @@ function getFormFields() {
   };
 }
 
-// Checks whether the sign-up form is valid
+/**
+ * Checks whether the sign-up form is valid.
+ * @returns {boolean} Whether the form is valid.
+ */
 function isFormValid() {
   const form = getFormFields();
   const usernameValid = form.username.value.trim() !== "";
@@ -26,13 +32,21 @@ function isFormValid() {
     passwordsMatch && form.acceptPrivacy.checked;
 }
 
-// Checks whether both passwords match
+/**
+ * Checks whether both passwords match.
+ * @param {Object} form - Sign-up form fields.
+ * @returns {boolean} Whether the passwords match.
+ */
 function checkPasswordsMatch(form) {
   return form.confirmPassword.value !== "" &&
     form.password.value === form.confirmPassword.value;
 }
 
-// Checks whether the email has a valid format
+/**
+ * Checks whether an email has a valid format.
+ * @param {string} email - Email address.
+ * @returns {boolean} Whether the email is valid.
+ */
 function isValidEmail(email) {
   const emailPattern =
     /^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/;
@@ -40,7 +54,10 @@ function isValidEmail(email) {
   return emailPattern.test(email.trim());
 }
 
-// Validates the username
+/**
+ * Validates the username.
+ * @returns {boolean} Whether the username is valid.
+ */
 function validateUsername() {
   const input = document.getElementById("username");
   const error = document.getElementById("usernameError");
@@ -50,7 +67,10 @@ function validateUsername() {
   return valid;
 }
 
-// Validates the email
+/**
+ * Validates the sign-up email.
+ * @returns {boolean} Whether the email is valid.
+ */
 function validateSignUpEmail() {
   const input = document.getElementById("email");
   const error = document.getElementById("emailError");
@@ -60,7 +80,10 @@ function validateSignUpEmail() {
   return valid;
 }
 
-// Validates the password
+/**
+ * Validates the password.
+ * @returns {boolean} Whether the password is valid.
+ */
 function validatePassword() {
   const input = document.getElementById("password");
   const error = document.getElementById("passwordError");
@@ -70,7 +93,10 @@ function validatePassword() {
   return valid;
 }
 
-// Validates the repeated password
+/**
+ * Validates the repeated password.
+ * @returns {boolean} Whether both passwords match.
+ */
 function validateConfirmPassword() {
   const password = document.getElementById("password").value;
   const confirm = document.getElementById("confirmPassword").value;
@@ -81,7 +107,10 @@ function validateConfirmPassword() {
   return valid;
 }
 
-// Validates the privacy checkbox
+/**
+ * Validates the privacy checkbox.
+ * @returns {boolean} Whether the privacy policy is accepted.
+ */
 function validatePrivacy() {
   const checkbox = document.getElementById("acceptPrivacy");
   const error = document.getElementById("privacyError");
@@ -95,7 +124,10 @@ function validatePrivacy() {
   return checkbox.checked;
 }
 
-// Validates all fields before submitting
+/**
+ * Validates all sign-up fields.
+ * @returns {boolean} Whether all fields are valid.
+ */
 function validateSignUpFields() {
   const usernameValid = validateUsername();
   const emailValid = validateSignUpEmail();
@@ -107,19 +139,29 @@ function validateSignUpFields() {
     confirmValid && privacyValid;
 }
 
-// Enables or disables the sign-up button
+/**
+ * Updates the sign-up button state.
+ */
 function updateSubmitButtonState() {
   const button = document.getElementById("signUpButton");
   button.disabled = false;
 }
 
-// Picks a random contact color
+/**
+ * Returns a random contact color.
+ * @returns {string} CSS contact color variable.
+ */
 function getRandomContactColor() {
   const randomColor = Math.floor(Math.random() * 15) + 1;
   return "--contact_color_" + randomColor;
 }
 
-// Creates a Firebase Auth account
+/**
+ * Creates a Firebase Auth account.
+ * @param {string} email - User email.
+ * @param {string} password - User password.
+ * @returns {Promise} Firebase sign-up request.
+ */
 function signUpUser(email, password) {
   const url = getSignUpUrl();
   const data = { email, password, returnSecureToken: true };
@@ -130,12 +172,22 @@ function signUpUser(email, password) {
   }).then((response) => response.json());
 }
 
-// Returns the Firebase sign-up URL
+/**
+ * Returns the Firebase sign-up URL.
+ * @returns {string} Firebase sign-up URL.
+ */
 function getSignUpUrl() {
   return `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`;
 }
 
-// Writes the new user to the database
+/**
+ * Saves a new user to the database.
+ * @param {string} uid - User ID.
+ * @param {string} username - Username.
+ * @param {string} email - User email.
+ * @param {string} idToken - Firebase authentication token.
+ * @returns {Promise} Firebase database request.
+ */
 function saveUserToDatabase(uid, username, email, idToken) {
   const url = baseUrl + "users/" + uid + ".json?auth=" + idToken;
   const user = { username, email, color: getRandomContactColor() };
@@ -146,7 +198,10 @@ function saveUserToDatabase(uid, username, email, idToken) {
   });
 }
 
-// Handles the sign-up form submission
+/**
+ * Handles the sign-up form submission.
+ * @param {Event} event - Submit event.
+ */
 function handleSignUpSubmit(event) {
   event.preventDefault();
 
@@ -157,7 +212,10 @@ function handleSignUpSubmit(event) {
   createUserAccount(form);
 }
 
-// Creates the user account and database entry
+/**
+ * Creates the user account and database entry.
+ * @param {Object} form - Sign-up form fields.
+ */
 function createUserAccount(form) {
   signUpUser(form.email.value.trim(), form.password.value)
     .then((data) => saveCreatedUser(data, form))
@@ -165,7 +223,12 @@ function createUserAccount(form) {
     .catch(handleSignUpError);
 }
 
-// Saves a successfully created user
+/**
+ * Saves a successfully created user.
+ * @param {Object} data - Firebase authentication data.
+ * @param {Object} form - Sign-up form fields.
+ * @returns {Promise} Firebase database request.
+ */
 function saveCreatedUser(data, form) {
   if (data.error) throw data.error;
 
@@ -177,7 +240,10 @@ function saveCreatedUser(data, form) {
   );
 }
 
-// Displays sign-up errors
+/**
+ * Handles sign-up errors.
+ * @param {Object} error - Sign-up error.
+ */
 function handleSignUpError(error) {
   const emailError = document.getElementById("emailError");
 
@@ -189,7 +255,9 @@ function handleSignUpError(error) {
   console.error(error);
 }
 
-// Shows the success overlay and redirects
+/**
+ * Shows the success overlay and starts the redirect.
+ */
 function showSuccessOverlay() {
   const overlay = document.getElementById("successOverlay");
   overlay.hidden = false;
@@ -197,12 +265,16 @@ function showSuccessOverlay() {
   setTimeout(redirectToLogin, 2000);
 }
 
-// Redirects to the login page
+/**
+ * Redirects to the login page.
+ */
 function redirectToLogin() {
   window.location.href = "../index.html";
 }
 
-// Registers live form events
+/**
+ * Registers the sign-up form listeners.
+ */
 function registerSignUpListeners() {
   const form = getFormFields();
 
@@ -213,7 +285,9 @@ function registerSignUpListeners() {
   form.confirmPassword.addEventListener("input", updateSubmitButtonState);
 }
 
-// Initializes the sign-up page
+/**
+ * Initializes the sign-up page.
+ */
 function initSignUp() {
   const signUpForm = document.querySelector(".signUpForm");
 

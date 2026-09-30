@@ -1,3 +1,6 @@
+/**
+ * Firebase configuration for the Join application.
+ */
 const firebaseConfig = {
   apiKey: "AIzaSyBBqXuaXjnWIvN5to5PuH5jif1FhT_9KKw",
   authDomain: "joindb-ccbc2.firebaseapp.com",
