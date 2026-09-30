@@ -217,17 +217,6 @@ function getDesktopGreetingText() {
 }
 
 /**
- * Returns the desktop greeting text.
- * @returns {string} Desktop greeting.
- */
-function getDesktopGreetingText() {
-  const greeting = getTimeBasedGreeting();
-
-  if (isGuest()) return greeting + "!";
-  return greeting + ",";
-}
-
-/**
  * Sets the greeting name color.
  * @param {Object} user - Current user data.
  */
