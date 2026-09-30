@@ -340,28 +340,6 @@ function validateContactName(id) {
   return valid;
 }
 
-/**
- * Validates a contact email address.
- * @param {string} id - Input element ID.
- * @returns {boolean} Whether the email is valid.
- */
-function validateContactEmail(id) {
-  const input = document.getElementById(id);
-  const value = input.value.trim();
-
-  if (!value) {
-    setContactError(id, "Please enter an email address.");
-    return false;
-  }
-
-  if (!isValidContactEmail(value)) {
-    setContactError(id, "Please enter a valid email address.");
-    return false;
-  }
-
-  setContactError(id, "");
-  return true;
-}
 
 /**
  * Validates a contact email address.
