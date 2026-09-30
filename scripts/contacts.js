@@ -106,7 +106,7 @@ function clearContactDetail() {
 
 
 function openMobileContactDetail() {
-  if (window.innerWidth >= 1024) return;
+  if (window.innerWidth >= 1251) return;
 
   const list = document.querySelector(".contacts_container");
   const details = document.querySelector(".contact_details_container");

@@ -1,4 +1,4 @@
-@media screen and (min-width: 320px) and (max-width: 1023px) {
+@media screen and (min-width: 320px) and (max-width: 1250px) {
   .main_content {
     display: flex;
     flex-direction: column;
@@ -7,6 +7,7 @@
   }
   .main_title {
     padding: 48px 16px 40px 16px;
+    max-width: none;
   }
   .search_wrapper {
     display: none;
@@ -44,23 +45,10 @@
     width: 100%;
   }
   .column_list {
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
+    flex-direction: row;
     width: 100%;
-    height: auto;
-    overflow: visible;
-  }
-  .column_list > li {
-    width: 100%;
-  }
-
-  .something {
-    width: 100%;
-  }
-
-  .board_card {
-    width: 100%;
+    height: 300px;
+    overflow-x: auto;
   }
   .nothing {
     width: 100%;
@@ -111,14 +99,9 @@
   .add_task_dialog {
     max-height: 600px;
   }
-  .column {
-  align-items: stretch;
-  width: 100%;
-  min-width: 0;
-}
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1439px) {
+@media screen and (min-width: 1251px) and (max-width: 1439px) {
   body {
     overflow: hidden;
   }
@@ -144,6 +127,7 @@
   .kanban {
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 162px;
     padding-bottom: 80px;
   }
 

@@ -4,7 +4,7 @@
   display: none;
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1150px) {
+/* @media screen and (min-width: 1024px) and (max-width: 1150px) {
   main {
     padding: 48px 40px;
   }
@@ -49,9 +49,9 @@
     text-align: center;
     white-space: nowrap;
   }
-}
+} */
 /* Mobile */
-@media screen and (max-width: 1023px) {
+@media screen and (max-width: 1250px) {
   body {
     overflow: auto;
   }
