@@ -1,3 +1,7 @@
+/**
+ * Loads contacts and adds them to the selection.
+ * @returns {Promise<void>}
+ */
 async function addContactsToSelection() {
   const uid = localStorage.getItem("uid");
   const contactRef = document.getElementById("contactList");
@@ -11,6 +15,12 @@ async function addContactsToSelection() {
   renderContacts(contactRef, contactArray);
 }
 
+/**
+ * Adds the current user to the contact selection.
+ * @param {HTMLElement} contactRef - Contact list element.
+ * @param {Object} user - Current user data.
+ * @returns {Promise<void>}
+ */
 async function addOwnUserToSelection(contactRef, user) {
   const isGuest = localStorage.getItem("isGuest") === "true";
 
@@ -19,6 +29,12 @@ async function addOwnUserToSelection(contactRef, user) {
   contactRef.innerHTML += await contactsTemplate(user, "username");
 }
 
+/**
+ * Renders all contacts in the selection.
+ * @param {HTMLElement} contactRef - Contact list element.
+ * @param {Array} contacts - Contacts to render.
+ * @returns {Promise<void>}
+ */
 async function renderContacts(contactRef, contacts) {
   for (const contact of contacts) {
     contactRef.innerHTML += await contactsTemplate(contact, "name");
@@ -26,6 +42,10 @@ async function renderContacts(contactRef, contacts) {
   }
 }
 
+/**
+ * Restores the assigned state of a contact.
+ * @param {string} name - Contact name.
+ */
 function restoreAssignedState(name) {
   const isAssigned = assigned.some((user) => user.name === name);
 
@@ -34,6 +54,11 @@ function restoreAssignedState(name) {
   }
 }
 
+/**
+ * Adds or removes a user from the assigned list.
+ * @param {string} name - Contact name.
+ * @param {string} color - Contact color.
+ */
 function assignedUsers(name, color) {
   const isAssigned = assigned.some((user) => user.name === name);
 
@@ -45,6 +70,11 @@ function assignedUsers(name, color) {
   addAssignedUsers(name, color);
 }
 
+/**
+ * Adds a user to the assigned list.
+ * @param {string} name - Contact name.
+ * @param {string} color - Contact color.
+ */
 function addAssignedUsers(name, color) {
   assigned.push({
     name: name,
@@ -54,6 +84,10 @@ function addAssignedUsers(name, color) {
   updateAssigned();
 }
 
+/**
+ * Removes a user from the assigned list.
+ * @param {string} name - Contact name.
+ */
 function removeAssignedUsers(name) {
   assigned = assigned.filter((user) => {
     return user.name !== name;
@@ -62,6 +96,10 @@ function removeAssignedUsers(name) {
   updateAssigned();
 }
 
+/**
+ * Updates the assigned user preview.
+ * @returns {Promise<void>}
+ */
 async function updateAssigned() {
   const assignedRef = document.getElementById("assignedUser");
   if (!assignedRef) return;
@@ -69,6 +107,10 @@ async function updateAssigned() {
   assignedRef.innerHTML = await createAssignedPreview();
 }
 
+/**
+ * Creates the assigned user preview.
+ * @returns {Promise<string>} Assigned user preview HTML.
+ */
 async function createAssignedPreview() {
   const visibleUsers = assigned.slice(0, 3);
   let html = "";
@@ -80,6 +122,10 @@ async function createAssignedPreview() {
   return html + createAssignedCounter();
 }
 
+/**
+ * Creates the counter for additional assigned users.
+ * @returns {string} Assigned user counter HTML.
+ */
 function createAssignedCounter() {
   const remaining = assigned.length - 3;
   if (remaining <= 0) return "";
@@ -91,17 +137,26 @@ function createAssignedCounter() {
   `;
 }
 
+/**
+ * Resets all assigned users.
+ */
 function resetAssigned() {
   assigned = [];
   clearAssignedPreview();
   resetAssignedContacts();
 }
 
+/**
+ * Clears the assigned user preview.
+ */
 function clearAssignedPreview() {
   const assignedRef = document.getElementById("assignedUser");
   if (assignedRef) assignedRef.innerHTML = "";
 }
 
+/**
+ * Resets the assigned state of all contacts.
+ */
 function resetAssignedContacts() {
   document.querySelectorAll(".select_contacts_option").forEach((contact) => {
     contact.classList.remove("assigned_button");
@@ -109,6 +164,10 @@ function resetAssignedContacts() {
   });
 }
 
+/**
+ * Resets the checkbox of an assigned contact.
+ * @param {HTMLElement} contact - Contact element.
+ */
 function resetAssignedCheckbox(contact) {
   const checkbox = contact.querySelector(".subtask_checkbox");
   if (checkbox) checkbox.checked = false;
