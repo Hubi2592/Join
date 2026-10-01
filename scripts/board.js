@@ -144,7 +144,7 @@ async function addInitials(arr, index) {
   const assignedArray = getAssignedUsers(arr, index);
   const visibleUsers = assignedArray.slice(0, 3);
   const initials = await createInitialsHtml(visibleUsers);
-  return initials + createAssignedCounter(assignedArray.length);
+  return initials + createAssignedCount(assignedArray.length);
 }
 
 /**
@@ -168,7 +168,7 @@ async function createInitialsHtml(users) {
 /**
  * This function adds another icon with all other assigned users combined into a single number
  */
-function createAssignedCounter(amount) {
+function createAssignedCount(amount) {
   const remaining = amount - 3;
   if (remaining <= 0) return "";
   return `
