@@ -1,22 +1,29 @@
+/**
+ * These are the global variables, only used for board
+ */
 const taskList = {};
 const subtaskProgressKey = "join-subtask-progress";
 let isSearch = false;
 let ticketAkku = [];
 let draggedTicket;
 
+/**
+ * This functions loads all functions, relevant for the page to work
+ */
 function initialise() {
   const uid = localStorage.getItem("uid");
-
   if (!uid) {
     window.location.href = "../index.html";
     return;
   }
-
   loadOwnProfile(uid);
   setupLogoutButton();
   cardColumn();
 }
 
+/**
+ * This function loads relevant information from the database
+ */
 async function getTickets(path = "") {
   const idToken = localStorage.getItem('idToken');
   let response = await fetch(baseUrl + path + ".json?auth=" + idToken);
@@ -24,11 +31,17 @@ async function getTickets(path = "") {
   return Object.values(responseToJson);
 }
 
+/**
+ * This function loads the tickets and sends the saved array for further sorting
+ */
 async function cardColumn() {
   let myArray = await getTickets("/tickets");
   sortReference(myArray);
 }
 
+/**
+ * This function manages to let the tickets sort first before checking if they're empty
+ */
 async function sortReference(reference) {
   await sort(reference);
   checkAmount("toDo");
@@ -37,64 +50,9 @@ async function sortReference(reference) {
   checkAmount("done");
 }
 
-function dragTicket(id, event) {
-  draggedTicket = id;
-  event.currentTarget.classList.add("dragging");
-}
-
-async function changeStatus(listKey) {
-  clearDropFeedback();
-
-  const myArray = await getTickets("/tickets");
-  const ticket = { ...myArray[draggedTicket], status: listKey };
-
-  await putTicket("/tickets/" + draggedTicket, ticket);
-
-  await sortReference(
-    myArray.map((item) =>
-      item.id === draggedTicket ? ticket : item
-    )
-  );
-}
-
-function allowDrop(event) {
-  event.preventDefault();
-
-  const column = event.currentTarget;
-  clearDropFeedback();
-
-  if (column.id === getDraggedStatus()) {
-    column.classList.add("drop_not_allowed");
-    return;
-  }
-
-  column.classList.add("drop_allowed");
-}
-
-function getDraggedStatus() {
-  for (const key of Object.keys(taskList)) {
-    const found = taskList[key].some(
-      (task) => task.id === draggedTicket
-    );
-
-    if (found) return key;
-  }
-
-  return "";
-}
-
-function clearDropFeedback() {
-  document.querySelectorAll(".column").forEach((column) => {
-    column.classList.remove("drop_allowed");
-    column.classList.remove("drop_not_allowed");
-  });
-}
-
-function handleDragEnd(event) {
-  event.currentTarget.classList.remove("dragging");
-  clearDropFeedback();
-}
-
+/**
+ * This function sorts the tickets, depending what status they've got
+ */
 async function sort(arr) {
   let toDo = arr.filter((t) => t["status"] == "toDo");
   let inProgress = arr.filter((t) => t["status"] == "inProgress");
@@ -103,6 +61,9 @@ async function sort(arr) {
   await updateHTML(toDo, inProgress, awaitFeedback, done);
 }
 
+/**
+ * This function safes the content of the sorted tickets and adds these in their columns
+ */
 async function updateHTML(toDo, inProgress, awaitFeedback, done) {
   taskList.toDo = toDo;
   taskList.inProgress = inProgress;
@@ -115,6 +76,9 @@ async function updateHTML(toDo, inProgress, awaitFeedback, done) {
   updateSubtaskProgress();
 }
 
+/**
+ * This functions adds the ticket in its fitting column
+ */
 async function updateColumn(arr, id) {
   document.getElementById(id).innerHTML = ``;
   for (let index = 0; index < arr.length; index++) {
@@ -122,70 +86,9 @@ async function updateColumn(arr, id) {
   }
 }
 
-async function readDatabase(arr, index, information) {
-  if (arr === undefined || index === undefined || information === undefined) return "";
-  return await arr[index][information];
-}
-
-function readPriority(priority) {
-  switch (priority) {
-    case "Low":
-      return `<img src="../assets/img/task/low.svg" alt="Low Symbol">`;
-    case "Urgent":
-      return `<img src="../assets/img/task/urgent.svg" alt="Urgent Symbol">`;
-    default:
-      return `<img src="../assets/img/task/medium.svg" alt="Urgent Symbol">`;
-  }
-}
-
-async function readAssigned(arr, index) {
-  const assignedArray = Array.isArray(arr[index]?.assigned) ? arr[index]?.assigned : [];
-  let asArr = await Promise.all(assignedArray.map(async (contact) => await taskDialogNamesTemplate(contact)));
-  return asArr.join("");
-}
-
-async function addInitials(arr, index) {
-  const assignedArray = getAssignedUsers(arr, index);
-  const visibleUsers = assignedArray.slice(0, 3);
-  const initials = await createInitialsHtml(visibleUsers);
-
-  return initials + createAssignedCounter(assignedArray.length);
-}
-
-function getAssignedUsers(arr, index) {
-  if (!Array.isArray(arr[index]?.assigned)) return [];
-
-  return arr[index].assigned;
-}
-
-async function createInitialsHtml(users) {
-  const html = await Promise.all(
-    users.map((user) => contactInitials(user))
-  );
-
-  return html.join("");
-}
-
-function createAssignedCounter(amount) {
-  const remaining = amount - 3;
-  if (remaining <= 0) return "";
-
-  return `
-    <div class="contact_color assigned_counter">
-      +${remaining}
-    </div>
-  `;
-}
-
-function readSubtask(arr, index) {
-  const safeSubtasks = Array.isArray(arr[index]?.subtasks) ? arr[index]?.subtasks : [];
-  return safeSubtasks
-    .map((content, subtaskIndex) =>
-      taskDialogSubtasksTemplate(content, subtaskIndex, isSubtaskChecked(arr[index]?.id, subtaskIndex)),
-    )
-    .join("");
-}
-
+/**
+ * This function checks if a column is empty and adds the fitting template into the column
+ */
 function checkAmount(id) {
   let listRef = document.getElementById(id);
   const amount = listRef.querySelectorAll("li");
@@ -203,40 +106,156 @@ function checkAmount(id) {
   }
 }
 
-function validateSearch() {
-  isSearch = true;
-  let searchRef = document.getElementById("searchField").value;
-  switch (searchRef.length) {
-    case 0:
-      isSearch = false;
-      cardColumn();
-      break;
+/**
+ * This function serves as returner for a precise value for templates
+ */
+async function readDatabase(arr, index, information) {
+  if (arr === undefined || index === undefined || information === undefined) return "";
+  return await arr[index][information];
+}
+
+/**
+ * This function reads the priority and returns the fitting image
+ */
+function readPriority(priority) {
+  switch (priority) {
+    case "Low":
+      return `<img src="../assets/img/task/low.svg" alt="Low Symbol">`;
+    case "Urgent":
+      return `<img src="../assets/img/task/urgent.svg" alt="Urgent Symbol">`;
     default:
-      search(searchRef);
-      break;
+      return `<img src="../assets/img/task/medium.svg" alt="Urgent Symbol">`;
   }
 }
 
-async function search(input) {
-  let myArray = await getTickets("/tickets");
-  ticketAkku = [];
-  for (let index = 0; index < myArray.length; index++) {
-    for (let subindex = 0; subindex < (await myArray[index].title.length); subindex++) {
-      let compare = (await myArray[index].title).slice(subindex, input.length + subindex).toLowerCase();
-      if (input.toLowerCase() == compare && !ticketAkku.some((ticket) => ticket.title === myArray[index].title)) {
-        ticketAkku.push(myArray[index]);
-      }
-    }
-    for (let subindex = 0; subindex < (await myArray[index].description.length); subindex++) {
-      let compare = (await myArray[index].description).slice(subindex, input.length + subindex).toLowerCase();
-      if (input.toLowerCase() == compare && !ticketAkku.some((ticket) => ticket.description === myArray[index].description)) {
-        ticketAkku.push(myArray[index]);
-      }
-    }
-  }
-  await sortReference(ticketAkku);
+/**
+ * This function reads the assigned users and adds the following template to the ticket
+ */
+async function readAssigned(arr, index) {
+  const assignedArray = Array.isArray(arr[index]?.assigned) ? arr[index]?.assigned : [];
+  let asArr = await Promise.all(assignedArray.map(async (contact) => await taskDialogNamesTemplate(contact)));
+  return asArr.join("");
 }
 
+/**
+ * This function adds the first three assigned users to the card of the ticket
+ */
+async function addInitials(arr, index) {
+  const assignedArray = getAssignedUsers(arr, index);
+  const visibleUsers = assignedArray.slice(0, 3);
+  const initials = await createInitialsHtml(visibleUsers);
+  return initials + createAssignedCounter(assignedArray.length);
+}
+
+/**
+ *  This function checks if there are users, assigned to a ticket
+ */
+function getAssignedUsers(arr, index) {
+  if (!Array.isArray(arr[index]?.assigned)) return [];
+  return arr[index].assigned;
+}
+
+/**
+ * This function checks all assigned users and creates an icon with the initials and color of its contact
+ */
+async function createInitialsHtml(users) {
+  const html = await Promise.all(
+    users.map((user) => contactInitials(user))
+  );
+  return html.join("");
+}
+
+/**
+ * This function adds another icon with all other assigned users combined into a single number
+ */
+function createAssignedCounter(amount) {
+  const remaining = amount - 3;
+  if (remaining <= 0) return "";
+  return `
+    <div class="contact_color assigned_counter">+${remaining}</div>
+  `;
+}
+
+/**
+ * This function shortens the description in the card for better readability
+ */
+async function reduceDescription(arr, index) {
+  if ((await arr[index].description.length) > 51) {
+    return (await arr[index].description.slice(0, 50)) + "...";
+  } else {
+    return await arr[index].description;
+  }
+}
+
+/**
+ * This function checks if subtasks are available and adds them into the ticket with the following template
+ */
+function readSubtask(arr, index) {
+  const safeSubtasks = Array.isArray(arr[index]?.subtasks) ? arr[index]?.subtasks : [];
+  return safeSubtasks
+    .map((content, subtaskIndex) =>
+      taskDialogSubtasksTemplate(content, subtaskIndex, isSubtaskChecked(arr[index]?.id, subtaskIndex)),
+    )
+    .join("");
+}
+
+/**
+ * This function reads all subtasks in each ticket and updates them if they are checked
+ */
+function updateSubtaskProgress() {
+  const columns = ["toDo", "inProgress", "awaitFeedback", "done"];
+  const progress = getSubtaskProgress();
+  columns.forEach((column) => {
+    const tasks = taskList[column] || [];
+    const cards = document.querySelectorAll(`#${column} .board_card`);
+    tasks.forEach((task, index) =>
+      updateTaskSubtaskProgress(task, cards[index], progress),
+    );
+  });
+}
+
+/**
+ * This function parses the status of all subtasks
+ */
+function getSubtaskProgress() {
+    return JSON.parse(localStorage.getItem(subtaskProgressKey)) || {};
+}
+
+/**
+ * This function updates the progressbar of the card
+ */
+function updateTaskSubtaskProgress(task, card, progress) {
+  const subtasks = Array.isArray(task?.subtasks) ? task.subtasks : [];
+  const progressSection = card?.querySelector(".sub_ladebalken");
+  const progressBar = card?.querySelector(".ladebalken");
+  const progressText = card?.querySelector(".sub_ladebalken > p");
+  if (!progressSection || !progressBar || !progressText) return;
+  const checkedCount = subtasks.reduce((count, _, index) => count + (progress[task.id]?.[index] ? 1 : 0), 0);
+  progressSection.style.display = subtasks.length === 0 ? "none" : "";
+  progressBar.style.width = `${subtasks.length ? (checkedCount / subtasks.length) * 100 : 0}px`;
+  progressText.textContent = `${checkedCount}/${subtasks.length} Subtasks`;
+}
+
+/**
+ * This function checks if a subtask has been checked
+ */
+function isSubtaskChecked(taskId, index) {
+  return Boolean(getSubtaskProgress()[taskId]?.[index]);
+}
+
+/**
+ * This function saves the status of the subtasks
+ */
+function saveSubtaskState(taskId, index, checked) {
+  const progress = getSubtaskProgress();
+  progress[taskId] = progress[taskId] || {};
+  progress[taskId][index] = checked;
+  localStorage.setItem(subtaskProgressKey, JSON.stringify(progress));
+}
+
+/**
+ * This functions deletes a ticket by pushing the newer ones one id up and eradicating the last ticket
+ */
 async function deleteTicket(path = "") {
   const idToken = localStorage.getItem('idToken');
   const myArray = await getTickets("/tickets");
@@ -261,6 +280,9 @@ async function deleteTicket(path = "") {
   await cardColumn();
 }
 
+/**
+ * This function adds updated informations about a ticket
+ */
 async function putTicket(path = "", data = {}) {
   const idToken = localStorage.getItem('idToken');
   await fetch(baseUrl + path + ".json?auth=" + idToken, {
@@ -272,61 +294,9 @@ async function putTicket(path = "", data = {}) {
   });
 }
 
-async function reduceDescription(arr, index) {
-  if ((await arr[index].description.length) > 51) {
-    return (await arr[index].description.slice(0, 50)) + "...";
-  } else {
-    return await arr[index].description;
-  }
-}
-
-function stopPropagation(event) {
-  event.stopPropagation();
-}
-
-function updateSubtaskProgress() {
-  const columns = ["toDo", "inProgress", "awaitFeedback", "done"];
-  const progress = getSubtaskProgress();
-  columns.forEach((column) => {
-    const tasks = taskList[column] || [];
-    const cards = document.querySelectorAll(`#${column} .board_card`);
-    tasks.forEach((task, index) =>
-      updateTaskSubtaskProgress(task, cards[index], progress),
-    );
-  });
-}
-
-function updateTaskSubtaskProgress(task, card, progress) {
-  const subtasks = Array.isArray(task?.subtasks) ? task.subtasks : [];
-  const progressSection = card?.querySelector(".sub_ladebalken");
-  const progressBar = card?.querySelector(".ladebalken");
-  const progressText = card?.querySelector(".sub_ladebalken > p");
-  if (!progressSection || !progressBar || !progressText) return;
-  const checkedCount = subtasks.reduce((count, _, index) => count + (progress[task.id]?.[index] ? 1 : 0), 0);
-  progressSection.style.display = subtasks.length === 0 ? "none" : "";
-  progressBar.style.width = `${subtasks.length ? (checkedCount / subtasks.length) * 100 : 0}px`;
-  progressText.textContent = `${checkedCount}/${subtasks.length} Subtasks`;
-}
-
-function getSubtaskProgress() {
-  try {
-    return JSON.parse(localStorage.getItem(subtaskProgressKey)) || {};
-  } catch {
-    return {};
-  }
-}
-
-function isSubtaskChecked(taskId, index) {
-  return Boolean(getSubtaskProgress()[taskId]?.[index]);
-}
-
-function saveSubtaskState(taskId, index, checked) {
-  const progress = getSubtaskProgress();
-  progress[taskId] = progress[taskId] || {};
-  progress[taskId][index] = checked;
-  localStorage.setItem(subtaskProgressKey, JSON.stringify(progress));
-}
-
+/**
+ * This function shows the editing dialog for updating a ticket
+ */
 async function editTaskDialog(listKey, index) {
   let arr = taskList[listKey];
   subtasks = Array.isArray(arr[index].subtasks) ? [...arr[index].subtasks] : [];
@@ -344,6 +314,9 @@ async function editTaskDialog(listKey, index) {
   hideButtons();
 }
 
+/**
+ * This function takes the updated elements for the task and adds them in the ticket
+ */
 async function editedTask(index, listkey) {
   const arr = taskList[listkey];
   const dialogRef = document.getElementById("dialog");
@@ -359,6 +332,9 @@ async function editedTask(index, listkey) {
   dialogRef.classList.remove("add_task_dialog");
 }
 
+/**
+ * This function loads all relevant functions from add task, necessary for the same called dialog
+ */
 function initialiseAddTask() {
   setupOutsideClick();
   initPriorityButtons();
@@ -369,23 +345,29 @@ function initialiseAddTask() {
   setMinimumDueDate();
 }
 
+/**
+ * This functions loads the more specific informations for the editing dialog
+ */
 async function setData(arr, index) {
   setAssigned(arr, index);
   setPriority(await readDatabase(arr, index, "priority"));
   await setCategory(arr, index);
 }
 
+/**
+ * This function loads the assigned users into the editing dialog
+ */
 async function setAssigned(arr, index) {
   const assignedRef = document.getElementById("assignedUser");
   const storedAssigned = await readDatabase(arr, index, "assigned");
-
   assigned = Array.isArray(storedAssigned) ? storedAssigned : [];
-
   if (!assignedRef) return;
-
   assignedRef.innerHTML = await createAssignedPreview();
 }
 
+/**
+ * This function loads the category of the ticket into the editing dialog
+ */
 async function setCategory(arr, index) {
   const categoryDropdown = document.getElementById("categoryDropdown");
   const categoryOption = categoryDropdown?.querySelector(`[data-value="${await readDatabase(arr, index, "category")}"]`);
@@ -394,6 +376,9 @@ async function setCategory(arr, index) {
   }
 }
 
+/**
+ * This function hides the irrelevant and show the relevant buttons from the add task dialog for editing a ticket
+ */
 function hideButtons() {
   const clearRef = document.getElementById("clearTaskButton");
   const createRef = document.getElementById("createTaskButton");
@@ -404,6 +389,9 @@ function hideButtons() {
   editRef.classList.toggle("hide");
 }
 
+/**
+ * This loads listeners to specific events for showing changes in real time
+ */
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("searchField").addEventListener("input", validateSearch);
   updateSubtaskProgress();
@@ -414,53 +402,3 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSubtaskProgress();
   });
 });
-
-async function openSpecificDialog(listKey, index, stat, reference) {
-  let dialogRef = document.getElementById("dialog");
-  dialogRef.innerHTML = ``;
-  if (reference == "taskBoardDialog") {
-    dialogRef.classList.add("task_board_dialog");
-    taskDialog(listKey, index, dialogRef);
-  } else {
-    dialogRef.classList.add("add_task_dialog");
-    dialogRef.innerHTML = await addTaskDialogTemplate(undefined, undefined, undefined);
-    document.getElementById('editTaskButton').classList.add("hide");
-    document.getElementById('editTaskButton').classList.remove("highlighted_button");
-    initActionButtons(stat);
-    setPriority("Medium");
-    initialiseAddTask();
-  }
-  dialogRef.showModal();
-  openAnimation(dialogRef);
-  document.body.classList.add("dialog_open");
-}
-
-async function openSwapDialog(reference) {
-  let dialogRef = document.getElementById("cardNav");
-  const liRef = document.getElementById(reference);
-  const rect = liRef.getBoundingClientRect();
-  dialogRef.style.top = `${rect.top + 16}px`;
-  dialogRef.style.left = `${rect.right - 188}px`;
-  dialogRef.showModal();
-  document.body.classList.toggle("dialog_open");
-}
-
-async function taskDialog(listKey, index, dialogRef) {
-  let arr = taskList[listKey];
-  dialogRef.dataset.taskId = arr[index].id;
-  dialogRef.innerHTML = await taskDialogTemplate(arr, index, listKey);
-}
-
-async function closeSpecificDialog(reference) {
-  let dialogRef = document.getElementById(reference);
-  await closeAnimation(dialogRef);
-  document.body.classList.remove("dialog_open");
-  dialogRef.classList.remove("task_board_dialog");
-  dialogRef.classList.remove("add_task_dialog");
-  cardColumn();
-}
-
-function shakeAnimation(id) {
-  const taskRef = document.getElementById('li' + id);
-  taskRef.classList.add('shakeIt');
-}
