@@ -1,3 +1,6 @@
+/**
+ * This template shows the content of a ticket in a dialog
+ */
 async function taskDialogTemplate(arr, index, listKey) {
   return `
     <article class="task_board" id="taskBoard" onclick="stopPropagation(event)">
@@ -53,6 +56,9 @@ async function taskDialogTemplate(arr, index, listKey) {
   `;
 }
 
+/**
+ * This template shows the assigned user in the ticket's dialog
+ */
 async function taskDialogNamesTemplate(contact) {
   return `
     <li>
@@ -62,6 +68,9 @@ async function taskDialogNamesTemplate(contact) {
   `;
 }
 
+/**
+ * This template shows the added subtask in the ticket's dialog
+ */
 function taskDialogSubtasksTemplate(content, index, checked) {
   return `
     <li class="subtask">
@@ -74,6 +83,9 @@ function taskDialogSubtasksTemplate(content, index, checked) {
   `;
 }
 
+/**
+ * This template shows if there are no tickets in the column
+ */
 function nothingTemplate() {
   return `
     <li class="nothing">
@@ -84,6 +96,9 @@ function nothingTemplate() {
   `;
 }
 
+/**
+ * This template shows if no tickets are done
+ */
 function nothingDoneTemplate() {
   return `
     <li class="nothing">
@@ -94,6 +109,9 @@ function nothingDoneTemplate() {
   `;
 }
 
+/**
+ * This template is the content of the ticket, shown as a card
+ */
 async function somethingTemplate(arr, index, listKey) {
   return `
     <li class="relative" id="li${+(await readDatabase(arr, index, "id"))}">

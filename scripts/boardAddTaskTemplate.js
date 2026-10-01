@@ -1,3 +1,6 @@
+/**
+ * This template is a replicate of the addTask.html
+ */
 async function addTaskDialogTemplate(arr, index, stat) {
   return `
     <article class="add_task" onclick="stopPropagation(event)">
