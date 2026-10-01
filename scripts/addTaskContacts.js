@@ -11,8 +11,8 @@ async function addContactsToSelection() {
 
   contactRef.innerHTML = "";
 
-  addOwnUserToSelection(contactRef, user);
-  renderContacts(contactRef, contactArray);
+  await addOwnUserToSelection(contactRef, user);
+  await renderContacts(contactRef, contactArray);
 }
 
 /**
@@ -48,10 +48,15 @@ async function renderContacts(contactRef, contacts) {
  */
 function restoreAssignedState(name) {
   const isAssigned = assigned.some((user) => user.name === name);
+  if (!isAssigned) return;
 
-  if (isAssigned) {
-    validateAssign(name);
-  }
+  const contact = document.getElementById(name);
+  if (!contact) return;
+
+  contact.classList.add("assigned_button");
+
+  const checkbox = contact.querySelector(".subtask_checkbox");
+  if (checkbox) checkbox.checked = true;
 }
 
 /**
@@ -171,4 +176,15 @@ function resetAssignedContacts() {
 function resetAssignedCheckbox(contact) {
   const checkbox = contact.querySelector(".subtask_checkbox");
   if (checkbox) checkbox.checked = false;
+}
+
+/**
+ * Restores all assigned contact states.
+ */
+function restoreAllAssignedStates() {
+  resetAssignedContacts();
+
+  assigned.forEach((user) => {
+    restoreAssignedState(user.name);
+  });
 }

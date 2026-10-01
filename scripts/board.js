@@ -300,16 +300,25 @@ async function putTicket(path = "", data = {}) {
 async function editTaskDialog(listKey, index) {
   let arr = taskList[listKey];
   subtasks = Array.isArray(arr[index].subtasks) ? [...arr[index].subtasks] : [];
+
   const dialogRef = document.getElementById("dialog");
   dialogRef.classList.remove("task_board_dialog");
   dialogRef.classList.add("add_task_dialog");
-  dialogRef.innerHTML = await addTaskDialogTemplate(arr, index, await readDatabase(arr, index, "status"));
+  dialogRef.innerHTML = await addTaskDialogTemplate(
+    arr,
+    index,
+    await readDatabase(arr, index, "status")
+  );
+
+  await initialiseAddTask();
   await setData(arr, index);
+  restoreAllAssignedStates();
+
   const list = document.getElementById("subtasks");
   for (let subindex = 0; subindex < subtasks.length; subindex++) {
     list.innerHTML += createSubtaskTemplate(subtasks[subindex], subindex);
   }
-  initialiseAddTask();
+
   initActionButtons(listKey);
   hideButtons();
 }
@@ -335,13 +344,13 @@ async function editedTask(index, listkey) {
 /**
  * This function loads all relevant functions from add task, necessary for the same called dialog
  */
-function initialiseAddTask() {
+async function initialiseAddTask() {
   setupOutsideClick();
   initPriorityButtons();
   initDropdownButtons();
   initDropdownOptions();
   initSubtaskListEvents();
-  addContactsToSelection();
+  await addContactsToSelection();
   setMinimumDueDate();
 }
 
@@ -349,7 +358,7 @@ function initialiseAddTask() {
  * This functions loads the more specific informations for the editing dialog
  */
 async function setData(arr, index) {
-  setAssigned(arr, index);
+  await setAssigned(arr, index);
   setPriority(await readDatabase(arr, index, "priority"));
   await setCategory(arr, index);
 }
