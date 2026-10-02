@@ -317,7 +317,7 @@ function validateEditContact() {
  */
 function isValidContactEmail(email) {
   const pattern =
-    /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(de|com|net|org|info|eu)$/i;
+   /^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.(de|com|net|org|info|eu)$/i;
 
   return pattern.test(email.trim());
 }
@@ -367,7 +367,13 @@ function validateContactEmail(id) {
 function validateContactPhone(id) {
   const input = document.getElementById(id);
   const value = input.value.trim();
-  const valid = /^[0-9+\-() ]+$/.test(value);
+
+  const digitCount = (value.match(/\d/g) || []).length;
+
+  const valid =
+    /^[0-9+\-() ]+$/.test(value) &&
+    !/[+\-() ]{2,}/.test(value) &&
+    digitCount >= 7;
 
   setContactError(
     id,
