@@ -241,7 +241,7 @@ form {
 /* Logo Animation */
 
 .signup_logo {
-  position: fixed;
+  position: absolute;
   top: 64px;
   left: max(calc(50% - 720px + 80px), 80px);
   width: 100px;
