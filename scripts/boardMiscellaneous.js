@@ -120,7 +120,7 @@ async function openSpecificDialog(listKey, index, stat, reference) {
   } else {
     dialogRef.classList.add("add_task_dialog");
     dialogRef.innerHTML = await addTaskDialogTemplate(undefined, undefined, undefined);
-    document.getElementById('editTaskButton').classList.add("hide");
+    document.getElementById('editTaskButton').classList.add('hide');
     document.getElementById('editTaskButton').classList.remove("highlighted_button");
     initActionButtons(stat);
     setPriority("Medium");
@@ -170,4 +170,17 @@ async function closeSpecificDialog(reference) {
  */
 function stopPropagation(event) {
   event.stopPropagation();
+}
+
+/**
+ * This function loads all relevant functions from add task, necessary for the same called dialog
+ */
+async function initialiseAddTask() {
+  setupOutsideClick();
+  initPriorityButtons();
+  initDropdownButtons();
+  initDropdownOptions();
+  initSubtaskListEvents();
+  await addContactsToSelection();
+  setMinimumDueDate();
 }

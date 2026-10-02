@@ -154,6 +154,7 @@ main {
   margin: 0;
   font-size: 16px;
   text-align: center;
+  color: var(--main_color);
 }
 
 /* Urgent tile */
@@ -189,6 +190,7 @@ main {
   font-size: 21px;
   font-weight: 600;
   white-space: nowrap;
+  color: var(--main_color);
 }
 
 /* Greeting */

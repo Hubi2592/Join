@@ -38,7 +38,7 @@ async function taskDialogTemplate(arr, index, listKey) {
         </ul>
       </section>
       <section class="delete_edit">
-        <button class="task_board_buttons" onclick="deleteTicket('/tickets/${await readDatabase(arr, index, "id")}'), closeDialog('dialog')">
+        <button class="task_board_buttons" onclick="deleteTicket('/tickets/${await readDatabase(arr, index, "id")}'), closeSpecificDialog('dialog')">
           <div>
             <img src="../assets/img/general/delete.svg" alt="Delete Symbol" />
             <p>Delete</p>

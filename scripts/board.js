@@ -342,19 +342,6 @@ async function editedTask(index, listkey) {
 }
 
 /**
- * This function loads all relevant functions from add task, necessary for the same called dialog
- */
-async function initialiseAddTask() {
-  setupOutsideClick();
-  initPriorityButtons();
-  initDropdownButtons();
-  initDropdownOptions();
-  initSubtaskListEvents();
-  await addContactsToSelection();
-  setMinimumDueDate();
-}
-
-/**
  * This functions loads the more specific informations for the editing dialog
  */
 async function setData(arr, index) {
