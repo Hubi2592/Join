@@ -183,5 +183,7 @@
   .signup_page_logo {
     width: 48px;
     height: auto;
+    top: 32px;
+    left: 32px;
   }
 }
