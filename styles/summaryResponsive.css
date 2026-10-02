@@ -52,9 +52,6 @@
 } */
 /* Mobile */
 @media screen and (max-width: 1250px) {
-  body {
-    overflow: auto;
-  }
   body > aside.desktop,
   .desktop {
     display: none !important;
@@ -289,7 +286,7 @@
 
   .summary_date {
     margin: 0;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     white-space: nowrap;
   }
@@ -387,7 +384,7 @@
   }
 
   .summary_date {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .summary_number {

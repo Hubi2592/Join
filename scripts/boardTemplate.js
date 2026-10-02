@@ -135,7 +135,7 @@ async function somethingTemplate(arr, index, listKey) {
                 </div>
               </dialog>
               <h4>${await readDatabase(arr, index, "category")}</h4>
-              <div class="swap_mobile mobile" role="button" onclick="stopPropagation(event); openSwapDialog('li${+(await readDatabase(arr, index, "id"))}'); dragTicket(${await readDatabase(arr, index, "id")})">
+              <div class="swap_mobile mobile" role="button" onclick="stopPropagation(event); openSwapDialog('li${+(await readDatabase(arr, index, "id"))}'); dragTicket(${await readDatabase(arr, index, "id")}, event)">
                 <img src="../assets/img/mobile/swap.svg" alt="Swap Icon">
               </div>
             </section>

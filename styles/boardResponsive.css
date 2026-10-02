@@ -85,6 +85,7 @@
   }
   .add_task {
     padding: 32px 16px;
+    height: 90dvh;
   }
   .add_task_head {
     display: none;

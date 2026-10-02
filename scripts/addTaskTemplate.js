@@ -32,12 +32,12 @@ function subtaskEditTemplate(subtext, index){
     <section class="edit_wrapper">
       <input class="edit" id="newSubtask" type="text" value="${subtext}">
       <div>
-        <button class="subtask_icon" onclick="editSubtask('newSubtask', ${index})">
-          <img src="../assets/img/summary/checkValidate.svg" alt="Edited Subtask">
-        </button>
-        <div class="subtask_middle"></div>
         <button class="subtask_icon" data-action="delete">
           <img src="../assets/img/general/delete.svg" alt="Delete Subtask">
+        </button>
+        <div class="subtask_middle"></div>
+        <button class="subtask_icon" onclick="editSubtask('newSubtask', ${index})">
+          <img src="../assets/img/summary/checkValidate.svg" alt="Edited Subtask">
         </button>
       </div>
     </section>

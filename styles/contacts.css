@@ -260,7 +260,7 @@ main {
   min-height: 16px;
   margin: 4px 0 0;
   padding: 0 16px;
-  color: #ff3d00;
+  color: var(--error_color);
   font-size: 12px;
   line-height: 16px;
 }
@@ -271,7 +271,7 @@ main {
 }
 
 .form_group input.input_error {
-  border-color: #ff3d00;
+  border-color: var(--error_color);
 }
 
 .contact_item.contact_item_active {

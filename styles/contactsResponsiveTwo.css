@@ -280,7 +280,7 @@
     align-items: center;
     width: 100%;
     min-height: 370px;
-    padding: 80px 16px 32px;
+    padding: 60px 16px 32px;
     background-color: white;
   }
 
@@ -325,7 +325,7 @@
     align-items: center;
     gap: 12px;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 0px;
   }
 
   .footer_buttons .cancel {

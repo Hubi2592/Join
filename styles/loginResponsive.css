@@ -284,3 +284,10 @@
     padding-bottom: 20px;
   }
 }
+
+@media screen and (max-width: 1100px) and (min-width: 1024px) {
+  .signup_logo{
+    width: 48px;
+    height: 58px;
+  }
+}

@@ -253,7 +253,8 @@
   border: none;
 }
 .subtask_icon > img {
-  height: 18px;
+  padding-top: 3px;
+  width: 15px;
 }
 .edit_wrapper {
   position: relative;
@@ -267,6 +268,7 @@
 .edit_wrapper > div {
   display: flex;
   gap: 4px;
+  padding-right: 16px;
 }
 .edit {
   flex: 1;
