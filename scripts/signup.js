@@ -55,15 +55,29 @@ function isValidEmail(email) {
 }
 
 /**
+ * Sets or clears the error state (message and red border) for a field.
+ * @param {string} inputId - Input element ID.
+ * @param {string} errorId - Error message element ID.
+ * @param {boolean} valid - Whether the field is valid.
+ * @param {string} message - Error message to show when invalid.
+ */
+function setFieldErrorState(inputId, errorId, valid, message) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+
+  if (error) error.textContent = valid ? "" : message;
+  input.classList.toggle("input_error", !valid);
+}
+
+/**
  * Validates the username.
  * @returns {boolean} Whether the username is valid.
  */
 function validateUsername() {
   const input = document.getElementById("username");
-  const error = document.getElementById("usernameError");
   const valid = input.value.trim() !== "";
 
-  error.textContent = valid ? "" : "Please enter your name.";
+  setFieldErrorState("username", "usernameError", valid, "Please enter your name.");
   return valid;
 }
 
@@ -73,10 +87,9 @@ function validateUsername() {
  */
 function validateSignUpEmail() {
   const input = document.getElementById("email");
-  const error = document.getElementById("emailError");
   const valid = isValidEmail(input.value);
 
-  error.textContent = valid ? "" : "Please enter a valid email address.";
+  setFieldErrorState("email", "emailError", valid, "Please enter a valid email address.");
   return valid;
 }
 
@@ -86,10 +99,9 @@ function validateSignUpEmail() {
  */
 function validatePassword() {
   const input = document.getElementById("password");
-  const error = document.getElementById("passwordError");
   const valid = input.value.length >= 8;
 
-  error.textContent = valid ? "" : "Password must be at least 8 characters.";
+  setFieldErrorState("password", "passwordError", valid, "Password must be at least 8 characters.");
   return valid;
 }
 
@@ -100,10 +112,9 @@ function validatePassword() {
 function validateConfirmPassword() {
   const password = document.getElementById("password").value;
   const confirm = document.getElementById("confirmPassword").value;
-  const error = document.getElementById("confirmPasswordError");
   const valid = confirm !== "" && confirm === password;
 
-  error.textContent = valid ? "" : "Passwords do not match.";
+  setFieldErrorState("confirmPassword", "confirmPasswordError", valid, "Passwords do not match.");
   return valid;
 }
 
@@ -140,11 +151,11 @@ function validateSignUpFields() {
 }
 
 /**
- * Updates the sign-up button state.
+ * Updates the sign-up button state based on form validity.
  */
 function updateSubmitButtonState() {
   const button = document.getElementById("signUpButton");
-  button.disabled = false;
+  button.disabled = !isFormValid();
 }
 
 /**
@@ -245,10 +256,8 @@ function saveCreatedUser(data, form) {
  * @param {Object} error - Sign-up error.
  */
 function handleSignUpError(error) {
-  const emailError = document.getElementById("emailError");
-
   if (error.message === "EMAIL_EXISTS") {
-    emailError.textContent = "This email is already in use.";
+    setFieldErrorState("email", "emailError", false, "This email is already in use.");
     return;
   }
 
@@ -279,9 +288,18 @@ function registerSignUpListeners() {
   const form = getFormFields();
 
   form.acceptPrivacy.addEventListener("change", validatePrivacy);
+  form.acceptPrivacy.addEventListener("change", updateSubmitButtonState);
+
+  form.username.addEventListener("input", validateUsername);
   form.username.addEventListener("input", updateSubmitButtonState);
+
+  form.email.addEventListener("input", validateSignUpEmail);
   form.email.addEventListener("input", updateSubmitButtonState);
+
+  form.password.addEventListener("input", validatePassword);
   form.password.addEventListener("input", updateSubmitButtonState);
+
+  form.confirmPassword.addEventListener("input", validateConfirmPassword);
   form.confirmPassword.addEventListener("input", updateSubmitButtonState);
 }
 
@@ -295,3 +313,5 @@ function initSignUp() {
   registerSignUpListeners();
   updateSubmitButtonState();
 }
+
+document.addEventListener("DOMContentLoaded", initSignUp);
