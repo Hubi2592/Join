@@ -18,6 +18,7 @@ function initAddTask() {
   setPriority("Medium");
   setMinimumDueDate();
   setupLogoutButton();
+  registerSelectAreaHoverListeners();
 }
 
 /**

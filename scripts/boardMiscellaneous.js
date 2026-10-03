@@ -183,4 +183,5 @@ async function initialiseAddTask() {
   initSubtaskListEvents();
   await addContactsToSelection();
   setMinimumDueDate();
+  registerSelectAreaHoverListeners();
 }

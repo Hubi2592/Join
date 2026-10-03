@@ -307,3 +307,14 @@ function escapeHtml(value) {
   div.textContent = value;
   return div.innerHTML;
 }
+
+/**
+ * Registers hover listeners for select areas to close dropdowns on mouse leave.
+ */
+function registerSelectAreaHoverListeners() {
+  document.querySelectorAll('.select_areas').forEach((area) => {
+    area.addEventListener('mouseleave', () => {
+      area.classList.remove('open');
+    });
+  });
+}
