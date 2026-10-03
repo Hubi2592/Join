@@ -1,5 +1,5 @@
 const baseUrl =
-  "https://join-38909-default-rtdb.europe-west1.firebasedatabase.app/";
+  "https://joindb-ccbc2-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
  * Opens a dialog.

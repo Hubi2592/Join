@@ -1,5 +1,5 @@
 const addTaskBaseUrl =
-  "https://join-38909-default-rtdb.europe-west1.firebasedatabase.app/";
+  "https://joindb-ccbc2-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let selectedPriority = "Medium";
 let subtasks = [];
