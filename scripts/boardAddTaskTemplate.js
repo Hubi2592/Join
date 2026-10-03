@@ -14,7 +14,8 @@ async function addTaskDialogTemplate(arr, index, stat) {
           <section class="add_task_left">
             <div class="add_task_input">
               <p>Title<span>*</span></p>
-              <input class="input_areas" id="taskTitle" type="text" placeholder="Enter a title" value="${await readDatabase(arr, index, "title")}" required/>
+              <input class="input_areas" id="taskTitle" type="text" placeholder="Enter a title" onblur="validateInput('taskTitle')" value="${await readDatabase(arr, index, "title")}" required/>
+              <p class="error_message hide" id="taskTitleError">This field ist required</p>
             </div>
             <div class="add_task_input">
               <p>Description</p>
@@ -22,7 +23,8 @@ async function addTaskDialogTemplate(arr, index, stat) {
             </div>
             <div class="add_task_input">
               <p>Due Date<span>*</span></p>
-              <input class="input_areas" id="dueDate" type="date" value="${await readDatabase(arr, index, "date")}" required/>
+              <input class="input_areas" id="dueDate" type="date" onblur="validateInput('dueDate')" value="${await readDatabase(arr, index, "date")}" required/>
+              <p class="error_message hide" id="dueDateError">This field ist required</p>
             </div>
           </section>
           <div class="add_task_middle"></div>
@@ -58,21 +60,22 @@ async function addTaskDialogTemplate(arr, index, stat) {
             <div class="add_task_input">
               <p>Category<span>*</span></p>
               <div class="select_areas" id="categoryDropdown">
-                <button class="select_areas_toggle" type="button">
+                <button class="select_areas_toggle" id="selectAreaCategory" type="button">
                   <span class="select_areas_value">
                     Select task category
                   </span>
                   <span class="select_areas_arrow">▾</span>
                 </button>
                 <div class="select_areas_menu">
-                  <button class="select_areas_option" type="button" data-value="Technical Task">
+                  <button class="select_areas_option" type="button" data-value="Technical Task" onblur="validateInput('category')">
                     Technical Task
                   </button>
-                  <button class="select_areas_option" type="button" data-value="User Story">
+                  <button class="select_areas_option" type="button" data-value="User Story" onblur="validateInput('category')">
                     User Story
                   </button>
                 </div>
                 <input type="hidden" id="category" name="category" value=""/>
+                <p class="error_message hide" id="categoryError">This field ist required</p>
               </div>
             </div>
             <div class="add_task_input">
@@ -102,11 +105,11 @@ async function addTaskDialogTemplate(arr, index, stat) {
               Clear
               <img src="../assets/img/general/close.svg" alt="Clear"/>
             </button>
-            <button class="highlighted_button" id="createTaskButton" type="button">
+            <button class="highlighted_button" id="createTaskButton" type="button" onclick="validateInput('taskTitle'); validateInput('dueDate'); validateInput('category')">
               Create Task
               <img src="../assets/img/general/check.svg" alt="Create task"/>
             </button>
-            <button class="highlighted_button" id="editTaskButton" onclick="editedTask(${index}, '${stat}')" type="button">
+            <button class="highlighted_button" id="editTaskButton" onclick="editedTask(${index}, '${stat}'); validateInput('taskTitle'); validateInput('dueDate'); validateInput('category')" type="button">
               Ok <img src="../assets/img/general/check.svg" alt="Editing Task">
             </button>
           </div>

@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="../styles/colors.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
     <link rel="stylesheet" href="../styles/standard.css" />
-    <link rel="stylesheet" href="../styles/standardClasses.css" />
     <link rel="stylesheet" href="../styles/contacts.css" />
     <link rel="stylesheet" href="../styles/addTaskDropdown.css" />
     <link rel="stylesheet" href="../styles/addTask.css" />
+    <link rel="stylesheet" href="../styles/standardClasses.css" />
     <link rel="stylesheet" href="../styles/standardResponsive.css">
     <link rel="stylesheet" href="../styles/addTaskResponsive.css" />
 
@@ -126,8 +126,10 @@
                 id="taskTitle"
                 type="text"
                 placeholder="Enter a title"
+                onblur="validateInput('taskTitle')"
                 required
               />
+              <p class="error_message hide" id="taskTitleError">This field ist required</p>
             </div>
 
             <div class="add_task_input">
@@ -143,7 +145,14 @@
             <div class="add_task_input">
               <p>Due Date<span>*</span></p>
 
-              <input class="input_areas" id="dueDate" type="date" required />
+              <input 
+                class="input_areas"
+                id="dueDate"
+                type="date"
+                onblur="validateInput('dueDate')"
+                required
+              />
+              <p class="error_message hide" id="dueDateError">This field ist required</p>
             </div>
           </section>
 
@@ -216,7 +225,11 @@
               <p>Category<span>*</span></p>
 
               <div class="select_areas" id="categoryDropdown">
-                <button class="select_areas_toggle" type="button">
+                <button
+                class="select_areas_toggle"
+                id="selectAreaCategory"
+                type="button"
+              >
                   <span class="select_areas_value"> Select task category </span>
 
                   <span class="select_areas_arrow">▾</span>
@@ -227,6 +240,7 @@
                     class="select_areas_option"
                     type="button"
                     data-value="Technical Task"
+                    onblur="validateInput('category')"
                   >
                     Technical Task
                   </button>
@@ -235,13 +249,19 @@
                     class="select_areas_option"
                     type="button"
                     data-value="User Story"
+                    onblur="validateInput('category')"
                   >
                     User Story
                   </button>
                 </div>
 
-                <input type="hidden" id="category" name="category" value="" />
+                <input
+                  type="hidden"
+                  id="category"
+                  name="category"
+                  value="" />
               </div>
+              <p class="error_message hide" id="categoryError">This field ist required</p>
             </div>
 
             <div class="add_task_input">
@@ -295,7 +315,8 @@
             <button
               class="highlighted_button"
               id="createTaskButton"
-              type="button">
+              type="button"
+              onclick="validateInput('taskTitle'); validateInput('dueDate'); validateInput('category')">
               Create Task
 
               <img src="../assets/img/general/check.svg" alt="Create task" />

@@ -329,4 +329,53 @@ function resetSubtasks() {
   renderSubtasks();
 }
 
+function validateInput(id) {
+  const input = document.getElementById(id);
+  const value = input.value.trim();
+  const error = document.getElementById(id+"Error");
+  switch (id) {
+    case 'dueDate':
+      validateDate(input, value, error);
+      break;
+    case 'category':
+      validateCategory(document.getElementById('selectAreaCategory'), value, error);
+      break;
+    default:
+      validateTitle(input, value, error);
+      break;
+  }
+}
+
+function validateTitle(input, value, error) {
+  if (value.length === 0) {
+    error.classList.remove('hide');
+    input.classList.add('input_error');
+  }
+  else {
+    error.classList.add('hide');
+    input.classList.remove('input_error');
+  }
+}
+
+function validateCategory(input, value, error) {
+  if (value.length === 0) {
+    error.classList.remove('hide');
+    input.classList.add('input_error');
+  } else {
+    error.classList.add('hide');
+    input.classList.remove('input_error');
+  }
+}
+
+function validateDate(input, value, error) {
+  if (value.length === 0 || value < getTodayDate()) {
+    error.classList.remove('hide');
+    input.classList.add('input_error');
+  }
+  else {
+    error.classList.add('hide');
+    input.classList.remove('input_error');
+  }
+}
+
 window.initAddTask = initAddTask;

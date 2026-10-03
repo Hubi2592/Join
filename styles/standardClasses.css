@@ -196,3 +196,11 @@
 .subtask_checkbox:checked + .subtask_checkbox_custom_assigned {
   background-image: url("../assets/img/task/checkboxValidWhite.svg");
 }
+
+.hide {
+  display: none;
+}
+
+.input_error {
+  border-color: var(--error_color);
+}

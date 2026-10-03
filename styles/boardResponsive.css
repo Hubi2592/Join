@@ -62,7 +62,7 @@
   .add_task_dialog {
     min-width: 234px;
     max-width: 353px;
-    max-height: 640px;
+    max-height: 90dvh;
   }
   .task_board {
     padding: 32px 24px;

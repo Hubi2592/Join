@@ -259,7 +259,7 @@ main {
 .error_message {
   min-height: 16px;
   margin: 4px 0 0;
-  padding: 0 16px;
+  padding: 0;
   color: var(--error_color);
   font-size: 12px;
   line-height: 16px;
