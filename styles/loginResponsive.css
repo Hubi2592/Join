@@ -35,7 +35,7 @@
 
   .signup_logo {
     position: absolute;
-    top: 16px;
+    top: 24px;
     left: 24px;
     z-index: 1001;
     width: 48px;
@@ -172,7 +172,7 @@
   }
 
   100% {
-    top: 16px;
+    top: 24px;
     left: 24px;
     width: 48px;
     height: 58px;
