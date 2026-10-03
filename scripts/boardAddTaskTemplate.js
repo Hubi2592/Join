@@ -75,8 +75,8 @@ async function addTaskDialogTemplate(arr, index, stat) {
                   </button>
                 </div>
                 <input type="hidden" id="category" name="category" value=""/>
-                <p class="error_message hide" id="categoryError">This field ist required</p>
               </div>
+              <p class="error_message hide" id="categoryError">This field ist required</p>
             </div>
             <div class="add_task_input">
               <p>Subtasks</p>

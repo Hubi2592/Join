@@ -330,6 +330,9 @@ function resetSubtasks() {
   renderSubtasks();
 }
 
+/**
+ * Guides validation to correct function
+ */
 function validateInput(id) {
   const input = document.getElementById(id);
   const value = input.value.trim();
@@ -347,6 +350,9 @@ function validateInput(id) {
   }
 }
 
+/**
+ * Checks if content of title is acceptable
+ */
 function validateTitle(input, value, error) {
   if (value.length === 0) {
     error.classList.remove('hide');
@@ -358,6 +364,9 @@ function validateTitle(input, value, error) {
   }
 }
 
+/**
+ * Checks if content of category is acceptable
+ */
 function validateCategory(input, value, error) {
   if (value.length === 0) {
     error.classList.remove('hide');
@@ -368,6 +377,9 @@ function validateCategory(input, value, error) {
   }
 }
 
+/**
+ * Checks if content of date is acceptable
+ */
 function validateDate(input, value, error) {
   if (value.length === 0 || value < getTodayDate()) {
     error.classList.remove('hide');

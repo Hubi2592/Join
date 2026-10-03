@@ -204,3 +204,8 @@
 .input_error {
   border-color: var(--error_color);
 }
+
+.error_message {
+  font-size: 20px;
+  color: var(--error_color);
+}
