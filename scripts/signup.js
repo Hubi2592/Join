@@ -1,7 +1,7 @@
 const baseUrl =
-  "https://joindb-ccbc2-default-rtdb.europe-west1.firebasedatabase.app/";
+  "https://join-38909-default-rtdb.europe-west1.firebasedatabase.app/";
 
-const apiKey = "AIzaSyBBqXuaXjnWIvN5to5PuH5jif1FhT_9KKw";
+const apiKey = "AIzaSyBflGmV08qI6_6ucJUmhthudNak6ratyg0";
 
 /**
  * Gets references to the sign-up form fields.

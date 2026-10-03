@@ -1,4 +1,4 @@
-const apiKey = "AIzaSyBBqXuaXjnWIvN5to5PuH5jif1FhT_9KKw";
+const apiKey = "AIzaSyBflGmV08qI6_6ucJUmhthudNak6ratyg0";
 
 const guestEmail = "guest@join.de";
 const guestPassword = "Guest123!";
